@@ -6,38 +6,13 @@
 <%@page import="java.util.List"%>
 <%@page import="com.meetnewfriend.entities.PostEntity"%>
 <%@page import="java.util.ArrayList"%>
-<%
-	if (session.getAttribute("succMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=session.getAttribute("succMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-
-<%
-	if (session.getAttribute("failMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=request.getAttribute("failMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-<!-- Message of success or fail  End-->
 
 <%
 	UserEntity user = (UserEntity) request.getAttribute("user");
 %>
 
 <%@include file="navbar.jsp"%>
+<%@include file="succorerror.jsp"%>
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
@@ -114,7 +89,7 @@
 
 	<div class="container mt-5">
 		<div class="row mb-5">
-			<h1 class="mt-5 text-center">All Uplaod Posts</h1>
+			<h1 class="mt-5 text-center">All Upload Posts</h1>
 			<%
 				ArrayList<PostEntity> posts = (ArrayList<PostEntity>) request.getAttribute("allposts");
 				for (int i = 0; i < posts.size(); i++) {
@@ -132,10 +107,8 @@
 						<div class="row">
 							<div class="col-md-1"></div>
 							<div class="col-md-5">
-								<a href="" class="mt-2">Delete</a>
-							</div>
-							<div class="col-md-5">
-								<a href="" class="mt-2">Comments</a>
+								<a href="" class="mt-2" onClick="getComments(<%=posts.get(i).getId()%>)" class="mt-2" data-bs-toggle="modal"
+											data-bs-target="#viewcomments">view all <%=posts.get(i).getComments().size()%></a>
 							</div>
 							<div class="col-md-1"></div>
 						</div>
@@ -152,7 +125,8 @@
 
 
 
-
+<%@include file="viewcomments.jsp"%>
+<script src="../../javascript/dashboard.js"></script>
 
 
 
@@ -167,7 +141,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalLabel">All Followers</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -184,7 +158,7 @@
 						</div>
 						<div class="col-md-4"><%=f.getFollower().getName()%></div>
 						<div class="col-md-4">
-							<a href="/follower/followrequest?userId=<%=f.getUser_id()%>">Follow</a>
+							<a href="/follower/followrequest?userId=<%=f.getFollower().getId()%>">Follow</a>
 						</div>
 					</div>
 				</div>
@@ -206,7 +180,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+					<h5 class="modal-title" id="exampleModalLabel">All Following</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
@@ -223,7 +197,7 @@
 						</div>
 						<div class="col-md-4"><%=f.getFollowing().getName()%></div>
 						<div class="col-md-4">
-							<a href="/follower/followrequest?userId=<%=f.getUser_id()%>">Follow</a>
+							<a href="/follower/followrequest?userId=<%=f.getFollowing().getId()%>">Follow</a>
 						</div>
 					</div>
 				</div>

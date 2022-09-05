@@ -31,11 +31,11 @@
 						href="/views/signin.jsp">Signin</a></li>
 
 					<li class="nav-item"><a class="nav-link"
-						href="/views/home.jsp">Signup</a></li>
+						href="/">Signup</a></li>
 					<%
 						} else {
 					%>
-					<li class="nav-item"><a class="nav-link"
+					<li class="nav-item"><a class="nav-link	"
 						href="/user/dashboard">UserName : <%=session.getAttribute("userName")%></a></li>
 
 					<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
@@ -47,12 +47,11 @@
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<li><a class="dropdown-item" href="/user/profile">Profile</a></li>
 							<li><a class="dropdown-item" href="../follower/checkrequest">Friend Request</a></li>
-							<li><a class="dropdown-item" href="#">Comments And Likes</a></li>
 						</ul></li>
 
 				</ul>
 				<form class="d-flex" action="/user/searchuser" method="post">
-					<input class="form-control me-2" type="search" placeholder="Search"
+					<input id="searchvalue" class="form-control me-2" type="search" placeholder="Search"
 						aria-label="Search" name="serachvalue">
 					<button class="btn btn-outline-success" type="submit">Search</button>
 				</form>
@@ -62,5 +61,9 @@
 			</div>
 		</div>
 	</nav>
+	<div id="fix"></div>
 </body>
 </html>
+
+
+<script src="../../javascript/search.js"></script>

@@ -14,14 +14,16 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.meetnewfriend.entities.CommentEntity;
 import com.meetnewfriend.entities.PostEntity;
 import com.meetnewfriend.entities.UserEntity;
-import com.meetnewfriend.service.CommentService;
+import com.meetnewfriend.service.impl.CommentServiceImpl;
 
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
 	@Autowired
-	private CommentService commentService;
+	private CommentServiceImpl commentServiceImpl;
 	
+	
+	//add comment to the post
 	@GetMapping("/addcomment")
 	public RedirectView addComment(HttpServletRequest req) {
 		RedirectView md=new RedirectView();
@@ -38,7 +40,9 @@ public class CommentController {
 		comment.setUser(user);
 		comment.setRealuser(Integer.parseInt(req.getParameter("commentUser")));
 		comment.setComment(req.getParameter("comment"));
-		comment=this.commentService.addComment(comment);
+		
+		//add comment
+		comment=this.commentServiceImpl.addComment(comment);
 		if(comment!=null)
 			session.setAttribute("succMsg","comment added..");
 		else

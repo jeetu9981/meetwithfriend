@@ -1,241 +1,163 @@
 
+<%@page import="com.meetnewfriend.entities.CommentEntity"%>
 <%@page import="com.meetnewfriend.entities.FollowingEntity"%>
 <%@page import="com.meetnewfriend.entities.RealFollowerEntity"%>
 <%@page import="com.meetnewfriend.entities.UserEntity"%>
 <%@page import="java.util.List"%>
 <%@page import="com.meetnewfriend.entities.PostEntity"%>
 <%@page import="java.util.ArrayList"%>
-<%
-	if (session.getAttribute("succMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=session.getAttribute("succMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-
-<%
-	if (session.getAttribute("failMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=request.getAttribute("failMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-<!-- Message of success or fail  End-->
 
 <%
 	UserEntity user = (UserEntity) request.getAttribute("user");
-	ArrayList<RealFollowerEntity> followers=(ArrayList<RealFollowerEntity>)request.getAttribute("followers");
-	ArrayList<FollowingEntity> following=(ArrayList<FollowingEntity>)request.getAttribute("followings");
 	ArrayList<PostEntity> posts = (ArrayList<PostEntity>) request.getAttribute("allposts");
 %>
 
 <%@include file="navbar.jsp"%>
-<div class="container">
+<%@include file="succorerror.jsp"%>
+<div class="container mt-5">
 	<div class="row">
-		<div class="col-md-6">
-			<h1 class="text-center mt-5 text-primary">User Profile</h1>
-			<div class="row mt-5">
-				<div class="col-md-4">
-					<img alt="" src="../../images/<%=user.getImage()%>" height="100"
-						width="100" style="border-radius: 800px">
-					<div>
-						<label class="text-center text-dark">Name : <%=user.getName()%></label>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<a href="" data-bs-toggle="modal" data-bs-target="#exampleModal"><h3>
-							Followers :<span> <%
- 	if (request.getAttribute("countFollower") != null) {
- %><%=request.getAttribute("countFollower")%></span>
-							<%
-								} else {
-							%>0<%
-								}
-							%>
-						</h3></a> <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal1"><h3>
-							Following :<span> <%
- 	if (request.getAttribute("countFollowing") != null) {
- %><%=request.getAttribute("countFollowing")%></span>
-							<%
-								} else {
-							%>0<%
-								}
-							%>
-						</h3></a>
-				</div>
+		<div class="col-md-2"></div>
+		<div class="col-md-4">
+			<h1 class="mx-2 mt-5 text-danger">User Profile</h1>
+			<img alt="" src="../../images/<%=user.getImage()%>" height="200" width="200" style="border-radius: 800px">
+			<div>
+				<h5 class="mx-4 text-dark"><b>Name : </b><%=user.getName()%></h5>
 			</div>
-			<img alt="" src="">
 		</div>
-		<div class="col-md-6 mt-5">
-			<div class="row">
-				<h1 class="text-center text-primary">Personal Details</h1>
-				<div class="col-md-3"></div>
-				<div class="col-md-6 mt-5">
-					<h6>
-						Favourite Books : <b> <%
- 	if (user.getFavouritBooks() != null) {
- %><%=user.getFavouritBooks()%> <%
- 	}
- %>
-						</b>
-					</h6>
-					<h6>
-						Favourite Places :<b> <%
- 	if (user.getFavouritePlaces() != null) {
- %> <%=user.getFavouritePlaces()%> <%
- 	}
- %>
-						</b>
-					</h6>
-					<h6>
-						Favourite Songss :<b> <%
- 	if (user.getFavouriteSongs() != null) {
- %> <%=user.getFavouriteSongs()%> <%
- 	}
- %>
-						</b>
-					</h6>
-				</div>
-				<div class="col-md-3"></div>
-
+	
+		<div class="col-md-4">
+			<h1 class="text-center text-danger mt-5">Personal Details</h1>
+			
+			<div class="row mx-5 mt-3">
+				<h6><b>Favourite Books :</b>  <%if (user.getFavouritBooks() != null) {%><%=user.getFavouritBooks()%> <%}%></h6>
 			</div>
+			<div class="row mx-5 mt-3">
+				<h6><b>Favourite Places : </b> <%if (user.getFavouritePlaces()!= null) {%><%=user.getFavouritePlaces()%> <%}%></h6>
+			</div>
+			<div class="row mx-5 mt-3">
+				<h6><b>Favourite Songs : </b> <%if (user.getFavouriteSongs() != null) {%><%=user.getFavouriteSongs()%> <%}%></h6>
+			</div>
+			
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	
+	<div class="row mt-24">
+		<div class="col-md-1"></div>
+		<div class="col-md-2 mt-3">
+			<a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Followers :<span> 
+				<%
+	 				if (request.getAttribute("countFollower") != null) 
+	 				{
+	 			%>
+	 					<%=request.getAttribute("countFollower")%></span>
+				<%
+					}
+	 				else 
+	 				{
+				%>
+						0
+				<%
+					}
+				%>
+			</a>
+		</div>
+		
+		<div class="col-md-3 mt-3">
+			<a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1">Following :<span> 
+				<%
+	 				if (request.getAttribute("countFollowing") != null) 
+	 				{
+	 			%>
+	 					<%=request.getAttribute("countFollowing")%></span>
+				<%
+					}
+	 				else 
+	 				{
+				%>
+						0
+				<%
+					}
+				%>
+			</a>
 		</div>
 	</div>
-
+	
+	<hr>
+	<h3 class="text-center">Details Edit</h3>
 	<div class="row mt-5">
 		<div class="col-md-4"></div>
+		<div class="col-md-3">
+			<a class="btn btn-dark" href="../post/addpost">Add Post</a>
+		</div>
 		<div class="col-md-4">
-			<div class="row">
-				<div class="col-md-6">
-					<a href="../post/addpost">Add Post</a>
-				</div>
-				<div class="col-md-6">
-					<a href="/views/edituserprofile.jsp">Edit Profile</a>
-				</div>
-
-			</div>
-			<hr>
+			<a class="btn btn-dark" href="/user/edituserprofile?userId=<%=user.getId()%>">Edit Profile</a>
 		</div>
 	</div>
+	<hr>
+</div>
 
-	<div class="container mt-5">
-		<div class="row mb-5">
-			<h1 class="mt-5 text-center">All Uplaod Posts</h1>
-			<%
-				for (int i = 0; i < posts.size(); i++) {
-			%>
-			<div class="col-md-3 mt-4">
-				<div class="card" style="width: 15rem;">
-					<img height="300" width="300"
-						src="../../images/<%=posts.get(i).getImage()%>"
-						class="card-img-top">
-					<ul class="list-group list-group-flush">
-						<h6>
-							Description :
-							<%=posts.get(i).getDescription()%>
-						</h6>
-						<div class="row">
-							<div class="col-md-1"></div>
-							<div class="col-md-5">
-								<a href="" class="mt-2">Delete</a>
+<div class="container mt-5 my-5">
+	<h1 class="text-center">Upload Posts</h1>
+	<%
+		if (posts.size() > 0) 
+		{
+			for (int i = 0; i < posts.size(); i++) 
+			{
+	%>
+				<div class="col-md-3 mt-4">
+					<div class="card" style="width: 15rem;">
+						<img height="300" width="300" src="../../images/<%=posts.get(i).getImage()%>" class="card-img-top">
+						<ul class="list-group list-group-flush">
+							<h6>Description : <%=posts.get(i).getDescription()%></h6>
+							<div class="row">
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<a onclick="deletePost(<%=posts.get(i).getId() %>)" href="" class="mt-2">Delete</a>
+								</div>
+								
+								<div class="col-md-5">
+									<a href="" data-bs-toggle="modal" onClick="getLikes(<%=posts.get(i).getId()%>)" data-bs-target="#viewalllikes" class="mt-2">Liked By : <%=posts.get(i).getLikes().size()%></a>
+								</div>
+								
+								<div class="col-md-1"></div>
 							</div>
-							<div class="col-md-5">
-								<a href="" class="mt-2">Comments</a>
-							</div>
-							<div class="col-md-1"></div>
-						</div>
-
-					</ul>
-				</div>
-			</div>
-			<%
-				}
-			%>
-		</div>
-	</div>
-
-
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-
-				<%
-      			for(RealFollowerEntity f:followers){
-      		%>
-
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-4">
-							<img alt="" src="../../images/<%=f.getFollower().getImage()%>"
-								height="50" width="50" style="border-radius: 800px">
-						</div>
-						<div class="col-md-4"><%=f.getFollower().getName() %></div>
+							
+							<div class="row mt-2">
+								<div class="col-md-2"></div>
+									<div class="col-md-8">
+										<a href="" onClick="getComments(<%=posts.get(i).getId()%>)" class="mt-2" data-bs-toggle="modal"
+											data-bs-target="#viewcomments">view all <%=posts.get(i).getComments().size()%> comments</a>
+									</div>
+								</div>
+						</ul>
 					</div>
 				</div>
-				<%
-      		}
-      %>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<!-- Modal -->
-	<div class="modal fade" id="exampleModal1" tabindex="-1"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-
-				<%
-      		for(FollowingEntity f:following){
-      	%>
-
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-4">
-							<img alt="" src="../../images/<%=f.getFollowing().getImage()%>"
-								height="50" width="50" style="border-radius: 800px">
-						</div>
-						<div class="col-md-4"><%=f.getFollowing().getName() %></div>
-						<div class="col-md-4">
-							<a
-								href="/following/unfollow?following=<%=f.getFollowing().getId() %>">Unfollow</a>
-						</div>
+	<%
+			}
+		} 
+		
+		else 
+		{
+	%>
+			<div class="container mt-5">
+				<div class="row">
+					<div class="col-md-4"></div>
+					<div class="col-md-4">
+						<img alt="" src="../../images/noresult.png">
 					</div>
-				</div>
-				<%
-      		}
-      %>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-bs-dismiss="modal">Close</button>
+					<div class="col-md-4"></div>
 				</div>
 			</div>
-		</div>
-	</div>
+	<%
+		}
+	%>
+</div>
+
+<%@include file="viewfollowing.jsp"%>
+<%@include file="viewfollowers.jsp"%>
+<%@include file="viewcomments.jsp"%>
+<%@include file="viewlikes.jsp"%>
+
+<script src="../../javascript/dashboard.js"></script>
+<script src="../../javascript/profile.js"></script>

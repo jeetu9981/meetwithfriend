@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="posts")
 public class PostEntity {
@@ -31,12 +34,12 @@ public class PostEntity {
 	
 	
 	@OneToMany(mappedBy = "post")
-//	@JoinColumn(name="likes")
+	@JsonIgnore
 	private List<LikeEntity> likes;
 	
 	
 	@OneToMany(mappedBy = "post")
-//	@JoinColumn(name="comments")
+	@JsonIgnore
 	private List<CommentEntity> comments;	
 
 	@Override

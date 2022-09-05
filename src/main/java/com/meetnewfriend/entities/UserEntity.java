@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="user")
@@ -33,6 +34,15 @@ public class UserEntity {
 	@Column(name="userName")
 	private String userName;
 	
+	@Transient
+	private String captchImage;
+	
+	@Transient
+	private String captcha;
+	
+	@Transient
+	private String hidden;
+	
 	private String favouritBooks;
 	private String favouriteSongs;
 	private String favouritePlaces;
@@ -42,6 +52,44 @@ public class UserEntity {
 	public int getId() {
 		return id;
 	}
+	
+	
+
+	public String getCaptchImage() {
+		return captchImage;
+	}
+
+
+
+	public void setCaptchImage(String captchImage) {
+		this.captchImage = captchImage;
+	}
+
+
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
+	}
+
+
+
+	public String getHidden() {
+		return hidden;
+	}
+
+
+
+	public void setHidden(String hidden) {
+		this.hidden = hidden;
+	}
+
+
 
 	public void setId(int id) {
 		this.id = id;
@@ -119,6 +167,8 @@ public class UserEntity {
 		this.favouritePlaces = favouritePlaces;
 	}
 
+	public UserEntity() {
+	}
 	@Override
 	public String toString() {
 		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password

@@ -25,7 +25,6 @@ public class LikeEntity {
 	private UserEntity user;
 	
 	@ManyToOne
-//	@JoinColumn(name="post")
 	private PostEntity post;
 	
 	private boolean status;

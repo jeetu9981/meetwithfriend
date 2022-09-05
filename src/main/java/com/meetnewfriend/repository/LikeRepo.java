@@ -20,6 +20,11 @@ public interface LikeRepo extends CrudRepository<LikeEntity, Integer>{
 	
 	
 	@Modifying
-	@Query(value="delete from likes where user_user_id=:user and post_post_id=:post",nativeQuery = true)
-	public int deleteLike(@Param("user") UserEntity user,@Param("post") PostEntity post);
+	@Query(value="delete from likes where user_user_id=:user and post_post_id=:post and realuser=:realUser",nativeQuery = true)
+	public int deleteLike(@Param("user") UserEntity user,@Param("post") PostEntity post,@Param("realUser") int realUser);
+	
+	
+	@Modifying
+	@Query(value="delete from likes where post_post_id=:post",nativeQuery = true)
+	public void deletePost(@Param("post") PostEntity post);
 }

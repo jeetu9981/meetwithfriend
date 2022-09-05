@@ -1,6 +1,6 @@
 <%@page import="com.meetnewfriend.entities.UserEntity"%>
 <%@page import="java.util.ArrayList"%>
-<%@include file="navbar.jsp"%>
+<%@include file="navbar.jsp"%> 
 
 <%
 	ArrayList<UserEntity> user = (ArrayList<UserEntity>) request.getAttribute("users");

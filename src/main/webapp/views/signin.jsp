@@ -1,34 +1,5 @@
-<!-- Message of success or fail  start-->
-<%
-	if (session.getAttribute("succMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=session.getAttribute("succMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-
-<%
-	if (session.getAttribute("failMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=request.getAttribute("failMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-<!-- Message of success or fail  End-->
-
-
-
 <%@include file="navbar.jsp"%>
+<%@include file="succorerror.jsp"%>
 <div class="container mt-5">
 	<div class="row">
 		<div class="col-md-4"></div>

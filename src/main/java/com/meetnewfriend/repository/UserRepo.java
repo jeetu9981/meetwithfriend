@@ -23,11 +23,13 @@ public interface UserRepo extends CrudRepository<UserEntity,Integer>{
 	public int updateUserDeatil(@Param("fb") String favouritBooks,@Param("fp") String favouritPlaces,@Param("fs") String favouritSongs,@Param("img") String image,@Param("id") int id);
 
 
-//	@Query(value="select * from user where name like )
+	@Query(value="select * from user where name like %:name%",nativeQuery = true)
 	public List<UserEntity> findByName(@Param("name") String name);
 	
 	
 	@Modifying
 	@Query(value="update user set favourit_books =:fb,favourite_places =:fp,favourite_songs =:fs,image =:img,email=:email,name=:name where user_id =:id",nativeQuery = true)
 	public int updateUser(@Param("fb") String favouritBooks,@Param("fp") String favouritPlaces,@Param("fs") String favouritSongs,@Param("img") String image,@Param("email") String email,@Param("name") String name,@Param("id") int id);
+
+	public UserEntity findByEmail(@Param("email") String email);
 }

@@ -23,7 +23,6 @@ public class CommentEntity {
 	private UserEntity user;
 	
 	@ManyToOne
-//	@JoinColumn(name="post")
 	private PostEntity post;
 	
 	private int realuser;

@@ -1,6 +1,7 @@
+<%@page import="com.meetnewfriend.entities.UserEntity"%>
 <%@include file="navbar.jsp"%>
 
-
+<%UserEntity user=(UserEntity)request.getAttribute("user"); %>
 
 <div class="container mt-5">
 	<div class="row">
@@ -12,13 +13,13 @@
 				
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label">Add Your Name</label> 
-					<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="name">
+					<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="name" value="<%=user.getName() %>">
 				</div>
 				
 				<div class="mb-3">
 					<label for="exampleInputEmail1" class="form-label">Add Your Email</label> 
 					<input type="email" class="form-control"
-						id="email" aria-describedby="emailHelp" name="email">
+						id="email" aria-describedby="emailHelp" name="email" value="<%=user.getEmail() %>">
 				</div>
 				
 				<div class="mb-3 mt-5">
@@ -28,21 +29,57 @@
 				</div>
 
 				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Add Your
-						Favourite Songs address</label> <input type="text" class="form-control"
-						id="email" aria-describedby="emailHelp" name="songs">
+					<label for="exampleInputEmail1" class="form-label">Add Your Favourite Songs</label>
+					<%
+						if(user.getFavouriteSongs()!=null)
+						{
+					%> 
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="songs" value="<%=user.getFavouriteSongs() %>">
+					<%	
+						}
+						else
+						{ 
+					%>
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="songs">
+					<%
+						} 
+					%>
 				</div>
 
 				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Add Your
-						Favourite Places address</label> <input type="text" class="form-control"
-						id="email" aria-describedby="emailHelp" name="places">
+					<label for="exampleInputEmail1" class="form-label">Add Your Favourite Places</label> 
+					<%
+						if(user.getFavouritePlaces()!=null)
+						{
+					%> 
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="places" value="<%=user.getFavouritePlaces() %>">
+					<%	
+						}
+						else
+						{ 
+					%>
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="places">
+					<%
+						} 
+					%>
 				</div>
 
 				<div class="mb-3">
-					<label for="exampleInputEmail1" class="form-label">Add Your
-						Favourite Books address</label> <input type="text" class="form-control"
-						id="email" aria-describedby="emailHelp" name="books">
+					<label for="exampleInputEmail1" class="form-label">Add Your Favourite Books </label> 
+					<%
+						if(user.getFavouritBooks()!=null)
+						{
+					%> 
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="books" value="<%=user.getFavouritBooks()%>">
+					<%	
+						}
+						else
+						{ 
+					%>
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="books">
+					<%
+						} 
+					%>
 				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>

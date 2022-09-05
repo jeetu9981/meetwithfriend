@@ -1,32 +1,6 @@
-<!-- Message of success or fail  start-->
-<%
-	if (session.getAttribute("succMsg") != null) {
-%>
-<input type="hidden" id="msg"
-	value="<%=session.getAttribute("succMsg")%>">
-<script type="text/javascript">
-	var m = document.getElementById("msg");
-	alert(m.defaultValue)
-</script>
-<%
-	}
-%>
-
-<%
-	if(session.getAttribute("failMsg")!=null){
-%>
-	<input type="hidden" id="msg" value="<%=request.getAttribute("failMsg")%>">
-	<script type="text/javascript">
-	var m=document.getElementById("msg"); 
-	alert(m.defaultValue)
-	</script>
-<%
-	}
-%>
-
-<!-- Message of success or fail  End-->
-
 <%@include file="navbar.jsp"%>
+<%@include file="succorerror.jsp"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <div class="container mt-5">
 	<div class="row">
 		<div class="col-md-4"></div>
@@ -50,6 +24,17 @@
 					<input type="password" class="form-control" id="password"
 						name="password"> <small id="passwordField"
 						style="color: red"></small>
+				</div>
+				
+				<div class="mb-3">
+					<input type="hidden" value="<%=request.getAttribute("hidden")%>">
+					<img src="data:image/png;base64,${capImage}">
+				</div>
+				
+				<div class="mb-3">
+					<label for="exampleInputPassword1" class="form-label">Enter Captcha</label>
+					<input type="password" class="form-control" id="password"
+						name="captcha">
 				</div>
 
 				<button type="submit" class="btn btn-primary">Submit</button>
