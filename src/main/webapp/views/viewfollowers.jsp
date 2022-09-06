@@ -1,8 +1,12 @@
-<%@page import="com.meetnewfriend.entities.RealFollowerEntity"%>
+<%@page import="com.meetnewfriend.dto.ProfileDto"%>
+<%@page import="com.meetnewfriend.entity.RealFollower"%>
 <%@page import="java.util.ArrayList"%>
 
 
-<% ArrayList<RealFollowerEntity> followers = (ArrayList<RealFollowerEntity>) request.getAttribute("followers");%>
+<%
+	ProfileDto profile2=(ProfileDto)request.getAttribute("profile");
+	ArrayList<RealFollower> followers = (ArrayList<RealFollower>) profile2.getFollowers();
+%>
 
 <!-- Modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -16,14 +20,14 @@
 				</div>
 
 				<%
-					for (RealFollowerEntity f : followers) {
+					for (RealFollower f : followers) {
 				%>
 
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-4">
-							<img alt="" src="../../images/<%=f.getFollower().getImage()%>"
-								height="50" width="50" style="border-radius: 800px">
+								<%if(f.getFollower().getImage()!=null){ %><img alt="" src="../../images/<%=f.getFollower().getImage()%>" height="50" width="50" style="border-radius: 800px"><%}else{ %>
+				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%} %>
 						</div>
 						<div class="col-md-4"><%=f.getFollower().getName()%></div>
 					</div>

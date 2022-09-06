@@ -1,4 +1,4 @@
-package com.meetnewfriend.entities;
+package com.meetnewfriend.entity;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="posts")
-public class PostEntity {
+public class Post {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="post_id")
@@ -30,21 +30,21 @@ public class PostEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private UserEntity user;
+	private User user;
 	
 	
 	@OneToMany(mappedBy = "post")
 	@JsonIgnore
-	private List<LikeEntity> likes;
+	private List<Like> likes;
 	
 	
 	@OneToMany(mappedBy = "post")
 	@JsonIgnore
-	private List<CommentEntity> comments;	
+	private List<Comment> comments;	
 
 	@Override
 	public String toString() {
-		return "PostEntity [id=" + id + ", description=" + description + ", image=" + image + ", user=" + user
+		return "Post [id=" + id + ", description=" + description + ", image=" + image + ", user=" + user
 				+ ", likes=" + likes + ", comments=" + comments + "]";
 	}
 
@@ -79,32 +79,32 @@ public class PostEntity {
 	}
 
 
-	public UserEntity getUser() {
+	public User getUser() {
 		return user;
 	}
 
 
-	public void setUser(UserEntity user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
 
-	public List<LikeEntity> getLikes() {
+	public List<Like> getLikes() {
 		return likes;
 	}
 
 
-	public void setLikes(List<LikeEntity> likes) {
+	public void setLikes(List<Like> likes) {
 		this.likes = likes;
 	}
 
 
-	public List<CommentEntity> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
 
-	public void setComments(List<CommentEntity> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
 

@@ -1,9 +1,7 @@
-package com.meetnewfriend.entities;
+package com.meetnewfriend.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,32 +11,23 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="likes")
-public class LikeEntity {
+@Table(name="comments")
+public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="like_id")
+	@Column(name="comment_id")
 	private int id;
 	
 	@OneToOne
-//	@JoinColumn(name="user")
-	private UserEntity user;
+	@JoinColumn(name="user")
+	private User user;
 	
 	@ManyToOne
-	private PostEntity post;
-	
-	private boolean status;
-
+	private Post post;
 	
 	private int realuser;
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+	
+	private String comment;
 
 	
 
@@ -52,8 +41,8 @@ public class LikeEntity {
 
 	@Override
 	public String toString() {
-		return "LikeEntity [id=" + id + ", user=" + user + ", post=" + ", status=" + status + ", realuser="
-				+ realuser + "]";
+		return "Comment [id=" + id + ", user=" + user + ", post="  + ", realuser=" + realuser + ", comment="
+				+ comment + "]";
 	}
 
 	public int getId() {
@@ -64,21 +53,30 @@ public class LikeEntity {
 		this.id = id;
 	}
 
-	public UserEntity getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(UserEntity user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public PostEntity getPost() {
+	public Post getPost() {
 		return post;
 	}
 
-	public void setPost(PostEntity post) {
+	public void setPost(Post post) {
 		this.post = post;
 	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
 	
 	
 }

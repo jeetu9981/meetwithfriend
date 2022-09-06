@@ -8,18 +8,18 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.meetnewfriend.entities.RealFollowerEntity;
+import com.meetnewfriend.entity.RealFollower;
 
 @Repository
-public interface RealFollowerRepo extends CrudRepository<RealFollowerEntity, Integer>{
+public interface RealFollowerRepo extends CrudRepository<RealFollower, Integer>{
 	@Query(value="select count(*) from realfollowers where user_id=:id",nativeQuery = true)
 	public int countFollower(@Param("id") int id);
 	
-	@Query("select rf from RealFollowerEntity rf where rf.user_id=:userId")
-	public List<RealFollowerEntity> findAllById(@Param("userId") int userId);
+	@Query("select rf from RealFollower rf where rf.user_id=:userId")
+	public List<RealFollower> findAllById(@Param("userId") int userId);
 	
 	@Query(value="select * from realfollowers where user_id=:acceptUser and follower=:userId",nativeQuery = true)
-	public RealFollowerEntity findByUser_idAndfollower(@Param("acceptUser") int acceptUser,@Param("userId") int userId);
+	public RealFollower findByUser_idAndfollower(@Param("acceptUser") int acceptUser,@Param("userId") int userId);
 	
 	
 	@Modifying

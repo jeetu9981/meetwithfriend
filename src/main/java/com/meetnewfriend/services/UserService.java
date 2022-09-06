@@ -2,30 +2,38 @@ package com.meetnewfriend.services;
 
 import java.util.List;
 
-import com.meetnewfriend.entities.UserEntity;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.meetnewfriend.dto.DashboardDto;
+import com.meetnewfriend.dto.ProfileDto;
+import com.meetnewfriend.entity.User;
 
 public interface UserService{
 	//Add user
-	public UserEntity addUser(UserEntity userEntity);
+	public String addUser(User user);
 	
 	//user signin
-	public UserEntity signin(UserEntity userEntity);
+	public User signin(User user);
 	
 	//this method is use for save first time detail of user when he/she login first time in application
-	public boolean updateUserDetail(int id,UserEntity userEntity);
+	public boolean updateUserDetail(int id,User user,MultipartFile image);
 	
 	//this method is use for get user
-	public UserEntity getUser(int id);
+	public User getUser(int id);
 	
 	//update when user Login Fisrt
 	public boolean updateLoginFirst(int id);
 	
 	//get user by name
-	public List<UserEntity> search(String name);
+	public List<User> search(String name);
 	
-	//update user
-	public int updateUser(int userId,UserEntity userEntity);
 	
 	//Edit user profile
-	public UserEntity edituserprofile(int userId);
+	public User edituserprofile(int userId);
+	
+	//for user profile
+	public ProfileDto getProfile(int userId);
+	
+	//for user dashboard
+	public DashboardDto getDashboard(int userId);
 }

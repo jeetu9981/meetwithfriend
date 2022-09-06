@@ -1,11 +1,11 @@
-<%@page import="com.meetnewfriend.entities.FollowerEntity"%>
+<%@page import="com.meetnewfriend.entity.Follower"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="navbar.jsp"%>
 
 
 
 <%
-	ArrayList<FollowerEntity> user = (ArrayList<FollowerEntity>) request.getAttribute("request");
+	ArrayList<Follower> user = (ArrayList<Follower>) request.getAttribute("request");
 	if (user.size() > 0) {
 %>
 
@@ -19,9 +19,8 @@
 		<div class="col-md-3">
 			<div class="row mt-5">
 				<div class="col-md-6">
-					<img alt=""
-						src="../../images/<%=user.get(i).getSendUserRequest().getImage()%>"
-						height="100" width="100" style="border-radius: 800px">
+						<%if(user.get(i).getSendUserRequest().getImage()!=null){ %><img alt="" src="../../images/<%=user.get(i).getSendUserRequest().getImage()%>" height="200" width="200" style="border-radius: 800px"><%}else{ %>
+				<img alt="" src="../../images/profile.png" height="100" width="100" style="border-radius: 800px"><%} %>
 					<div>
 						<label class="text-center text-dark">Name : <%=user.get(i).getSendUserRequest().getName()%></label>
 					</div>

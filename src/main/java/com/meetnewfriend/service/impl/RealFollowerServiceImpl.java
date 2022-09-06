@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meetnewfriend.entities.RealFollowerEntity;
+import com.meetnewfriend.entity.RealFollower;
 import com.meetnewfriend.repository.RealFollowerRepo;
 import com.meetnewfriend.services.RealFollowerService;
 
@@ -17,7 +17,7 @@ public class RealFollowerServiceImpl implements RealFollowerService{
 	
 	
 	//increase follower of one user
-	public RealFollowerEntity addFollower(RealFollowerEntity entity) {
+	public RealFollower addFollower(RealFollower entity) {
 		return this.realFollowerRepo.save(entity);
 	}
 	
@@ -29,13 +29,13 @@ public class RealFollowerServiceImpl implements RealFollowerService{
 	
 	
 	//already following or not
-	public RealFollowerEntity checkExistOrNot(int userId,int acceptUser){
+	public RealFollower checkExistOrNot(int userId,int acceptUser){
 		return this.realFollowerRepo.findByUser_idAndfollower(acceptUser,userId);
 	}
 	
 	
 	//get user followers
-	public List<RealFollowerEntity> getFollower(int userId){
+	public List<RealFollower> getFollower(int userId){
 		return this.realFollowerRepo.findAllById(userId);
 	}
 	

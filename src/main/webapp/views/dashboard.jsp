@@ -1,8 +1,9 @@
-<%@page import="com.meetnewfriend.entities.CommentEntity"%>
+<%@page import="com.meetnewfriend.dto.DashboardDto"%>
+<%@page import="com.meetnewfriend.entity.Comment"%>
 <%@page import="java.util.List"%>
-<%@page import="com.meetnewfriend.entities.LikeEntity"%>
-<%@page import="com.meetnewfriend.entities.PostEntity"%>
-<%@page import="com.meetnewfriend.entities.RealFollowerEntity"%>
+<%@page import="com.meetnewfriend.entity.Like"%>
+<%@page import="com.meetnewfriend.entity.Post"%>
+<%@page import="com.meetnewfriend.entity.RealFollower"%>
 <%@page import="java.util.ArrayList"%>
 
 
@@ -22,7 +23,8 @@
 
 
 <%
-	ArrayList<PostEntity> posts = (ArrayList<PostEntity>) request.getAttribute("posts");
+	DashboardDto dashboard=(DashboardDto)request.getAttribute("posts");
+	ArrayList<Post> posts = (ArrayList<Post>)dashboard.getPosts();
 	if (posts.size() > 0) {
 %>
 
@@ -30,14 +32,21 @@
 	<div class="row">
 		<h1 class="text-center ">All Uploaded Posts</h1>
 		<%
-			for (PostEntity post : posts) {
+			for (Post post : posts) {
 		%>
 		<div class="col-md-4"></div>
 		<div class="col-md-3 mt-3 mb-5 box">
 			<div class="row mt-2">
 				<div class="col-md-3">
 					<a href="/user/userprofile?userId=<%=post.getUser().getId()%>">
-						<img alt="" src="../../images/<%=post.getUser().getImage()%>" style="border-radius: 100px" height="60" width="60">
+						<%
+							if(post.getUser().getImage()!=null){
+						%><img alt="" src="../../images/<%=post.getUser().getImage()%>" height="50" width="50" style="border-radius: 800px"><%
+							}else{
+						%>
+				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%
+					}
+				%>
 					</a>
 				</div>
 				<div class="col-md-6 mt-3">
@@ -54,10 +63,10 @@
 					<div class="row">
 						<div class="col-md-4">
 							<%
-								List<LikeEntity> likes = post.getLikes();
-								boolean status = true;
-								if (likes.size() > 0) {
-								for (LikeEntity l : likes) {
+								List<Like> likes = post.getLikes();
+													boolean status = true;
+													if (likes.size() > 0) {
+													for (Like l : likes) {
 							%>
 							<%
 								if (l.getUser().getId() == (int) session.getAttribute("userId") && l.isStatus() == true) {

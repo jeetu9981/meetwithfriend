@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meetnewfriend.entities.FollowingEntity;
-import com.meetnewfriend.entities.UserEntity;
+import com.meetnewfriend.entity.Follower;
+import com.meetnewfriend.entity.Following;
+import com.meetnewfriend.entity.User;
 import com.meetnewfriend.repository.FollowingRepo;
 import com.meetnewfriend.services.FollowingService;
 
@@ -16,9 +17,16 @@ public class FollowingServiceImpl implements FollowingService{
 	@Autowired
 	private FollowingRepo followingRepo;
 	
+	@Autowired
+	private FollowerServiceImpl followerServiceImpl;
+	
+	
+	@Autowired
+	private RealFollowerServiceImpl realFollowerService;
+	
 	//increase following of user
 	@Transactional
-	public FollowingEntity addfollowing(FollowingEntity entity){
+	public Following addfollowing(Following entity){
 		return this.followingRepo.save(entity);
 	}
 	
@@ -30,16 +38,40 @@ public class FollowingServiceImpl implements FollowingService{
 	
 	
 	//get all following of user
-	public List<FollowingEntity> getFollwing(int userId){
-		return (List<FollowingEntity>) this.followingRepo.findFollowings(userId);
+	public List<Following> getFollwing(int userId){
+		return (List<Following>) this.followingRepo.findFollowings(userId);
 	}
 	
 	//delete follower
 	@Transactional
 	public int delete(int following,int userId) {
-		UserEntity follow=new UserEntity();
+		User follow=new User();
 		follow.setId(following);
 		
-		return this.followingRepo.deleteFollowing(follow,userId);
+		if(this.followingRepo.deleteFollowing(follow,userId)>0) {
+			//if both are not following each other then if execute and inside if from follow request we delete request from other user
+			if(this.followerServiceImpl.deleteRequest(following,userId)>0) {
+				
+				//delete follower from onother user
+				this.realFollowerService.deleteRealFollower(following,userId);
+				
+			}else {
+				//delete follower from other person and add this follower in follow back request
+				this.realFollowerService.deleteRealFollower(following,userId);
+				
+				Follower follower = new Follower();
+				User user = new User();
+				user.setId(following);
+				follower.setAccept(true);
+				follower.setFollowBack(false);
+				follower.setSendUserRequest(user);
+				follower.setAcceptUser(userId);
+				
+				//we add this request in follow back request only
+				this.followerServiceImpl.addRequest(following,userId);
+			}
+			return 1;
+		}
+		return 0;
 	}
 }

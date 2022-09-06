@@ -11,7 +11,7 @@
 				<div class="mb-3 mt-5">
 					<label for="exampleInputEmail1" class="form-label">Upload
 						your profile image address</label> <input type="file" class="form-control"
-						id="email" aria-describedby="emailHelp" name="image">
+						id="email" aria-describedby="emailHelp" name="image1">
 				</div>
 
 				<div class="mb-3">
@@ -32,6 +32,7 @@
 						id="email" aria-describedby="emailHelp" name="favouritBooks">
 				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" class="btn btn-primary">Skip</button>
 			</form>
 		</div>
 		<div class="col-md-4"></div>

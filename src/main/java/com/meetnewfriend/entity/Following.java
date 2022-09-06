@@ -1,4 +1,4 @@
-package com.meetnewfriend.entities;
+package com.meetnewfriend.entity;
 
 import javax.persistence.Table;
 import javax.persistence.Column;
@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @Table(name="following")
-public class FollowingEntity {
+public class Following {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="following_id")
@@ -21,11 +21,11 @@ public class FollowingEntity {
 	
 	@OneToOne
 	@JoinColumn(name="following")
-	private UserEntity following;
+	private User following;
 
 	@Override
 	public String toString() {
-		return "FollowingEntity [id=" + id + ", user_id=" + user_id + ", following=" + following + "]";
+		return "Following [id=" + id + ", user_id=" + user_id + ", following=" + following + "]";
 	}
 
 	public int getId() {
@@ -44,11 +44,11 @@ public class FollowingEntity {
 		this.user_id = user_id;
 	}
 
-	public UserEntity getFollowing() {
+	public User getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(UserEntity following) {
+	public void setFollowing(User following) {
 		this.following = following;
 	}
 	

@@ -6,14 +6,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.meetnewfriend.entities.CommentEntity;
-import com.meetnewfriend.entities.PostEntity;
-import com.meetnewfriend.entities.UserEntity;
 import com.meetnewfriend.service.impl.CommentServiceImpl;
 
 @RestController
@@ -29,24 +24,12 @@ public class CommentController {
 		RedirectView md=new RedirectView();
 		HttpSession session=req.getSession();
 		
-		UserEntity user=new UserEntity();
-		user.setId((int)session.getAttribute("userId"));
-		
-		PostEntity post=new PostEntity();
-		post.setId(Integer.parseInt(req.getParameter("postId")));
-		
-		CommentEntity comment=new CommentEntity();
-		comment.setPost(post);
-		comment.setUser(user);
-		comment.setRealuser(Integer.parseInt(req.getParameter("commentUser")));
-		comment.setComment(req.getParameter("comment"));
-		
 		//add comment
-		comment=this.commentServiceImpl.addComment(comment);
-		if(comment!=null)
+		boolean status=this.commentServiceImpl.addComment((int)session.getAttribute("userId"),Integer.parseInt(req.getParameter("postId")),Integer.parseInt(req.getParameter("commentUser")),req.getParameter("comment"));
+		if(status)
 			session.setAttribute("succMsg","comment added..");
 		else
-			session.setAttribute("failMsg","something went wrong..");
+			session.setAttribute("failMsg","Please Add Proper Comment.");
 		md.setUrl("/user/dashboard");
 		return md;
 	}

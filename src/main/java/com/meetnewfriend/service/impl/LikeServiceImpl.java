@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.meetnewfriend.entities.LikeEntity;
-import com.meetnewfriend.entities.PostEntity;
-import com.meetnewfriend.entities.UserEntity;
+import com.meetnewfriend.entity.Like;
+import com.meetnewfriend.entity.Post;
+import com.meetnewfriend.entity.User;
 import com.meetnewfriend.repository.LikeRepo;
 import com.meetnewfriend.services.LikeService;
 
@@ -18,31 +18,55 @@ public class LikeServiceImpl implements LikeService{
 	private LikeRepo likeRepo;
 	
 	//to check like or not before
-	public LikeEntity checkAlreadyLike(PostEntity postId,UserEntity likeUser,int realUser) {
+	public Like checkAlreadyLike(Post postId,User likeUser,int realUser) {
 		return this.likeRepo.findByPostAndUserAndRealuser(postId,likeUser,realUser);
 	}
 	
 	//to add like on post
-	public LikeEntity addLike(LikeEntity like) {
-		return this.likeRepo.save(like);
+	public boolean addLike(int likeUser,int postId,int userId) {
+		Post post=new Post();
+		post.setId(postId);
+		User user=new User();
+		user.setId(userId);
+		
+		//this api ceck if it already like or not
+		Like like=this.checkAlreadyLike(post,user,userId);
+		
+		if(like==null) {
+			like =new Like();
+			like.setUser(user);
+			like.setPost(post);
+			like.setStatus(true);
+			like.setRealuser(likeUser);
+			if(this.likeRepo.save(like)!=null)
+				return true;
+		}
+		return false;
 	}
 	
 	//get posts
-	public List<LikeEntity> getPosts(int user){
+	public List<Like> getPosts(int user){
 		return this.likeRepo.findByRealuser(user);
 	}
 	
 	
 	//delete like which like before
 	@Transactional
-	public int delete(UserEntity user,PostEntity post,int realUser){
-		return this.likeRepo.deleteLike(user,post,realUser);
+	public int delete(int userId,int postId,int realUser,int likeUser){
+		Post post=new Post();
+		post.setId(postId);
+		User user=new User();
+		user.setId(likeUser);
+		if(this.likeRepo.deleteLike(user,post,realUser)>0) {
+			return 1;
+		}
+		return 0;
 	}
 	
 	//delete likes of post
 	@Transactional
 	public void deletePost(int postId) {
-		PostEntity post=new PostEntity();
+		Post post=new Post();
 		post.setId(postId);
 		this.likeRepo.deletePost(post);
 	}

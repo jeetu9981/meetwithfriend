@@ -1,4 +1,4 @@
-package com.meetnewfriend.entities;
+package com.meetnewfriend.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="user")
-public class UserEntity {
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="userId")
@@ -167,11 +167,11 @@ public class UserEntity {
 		this.favouritePlaces = favouritePlaces;
 	}
 
-	public UserEntity() {
+	public User() {
 	}
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password
+		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password
 				+ ", loginFirst=" + loginFirst + ", image=" + image + ", userName=" + userName + ", favouritBooks="
 				+ favouritBooks + ", favouriteSongs=" + favouriteSongs + ", favouritePlaces=" + favouritePlaces + "]";
 	}

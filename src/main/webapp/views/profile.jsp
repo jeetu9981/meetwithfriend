@@ -1,15 +1,17 @@
 
-<%@page import="com.meetnewfriend.entities.CommentEntity"%>
-<%@page import="com.meetnewfriend.entities.FollowingEntity"%>
-<%@page import="com.meetnewfriend.entities.RealFollowerEntity"%>
-<%@page import="com.meetnewfriend.entities.UserEntity"%>
+<%@page import="com.meetnewfriend.dto.ProfileDto"%>
+<%@page import="com.meetnewfriend.entity.Comment"%>
+<%@page import="com.meetnewfriend.entity.Following"%>
+<%@page import="com.meetnewfriend.entity.RealFollower"%>
+<%@page import="com.meetnewfriend.entity.User"%>
 <%@page import="java.util.List"%>
-<%@page import="com.meetnewfriend.entities.PostEntity"%>
+<%@page import="com.meetnewfriend.entity.Post"%>
 <%@page import="java.util.ArrayList"%>
 
 <%
-	UserEntity user = (UserEntity) request.getAttribute("user");
-	ArrayList<PostEntity> posts = (ArrayList<PostEntity>) request.getAttribute("allposts");
+	ProfileDto profile = (ProfileDto) request.getAttribute("profile");
+	ArrayList<Post> posts=(ArrayList<Post>)profile.getPosts();
+	User user = (User) profile.getUser();
 %>
 
 <%@include file="navbar.jsp"%>
@@ -19,7 +21,14 @@
 		<div class="col-md-2"></div>
 		<div class="col-md-4">
 			<h1 class="mx-2 mt-5 text-danger">User Profile</h1>
-			<img alt="" src="../../images/<%=user.getImage()%>" height="200" width="200" style="border-radius: 800px">
+			<%
+				if(user.getImage()!=null){
+			%><img alt="" src="../../images/<%=user.getImage()%>" height="200" width="200" style="border-radius: 800px"><%
+				}else{
+			%>
+				<img alt="" src="../../images/profile.png" height="200" width="200" style="border-radius: 800px"><%
+					}
+				%>
 			<div>
 				<h5 class="mx-4 text-dark"><b>Name : </b><%=user.getName()%></h5>
 			</div>
@@ -29,13 +38,25 @@
 			<h1 class="text-center text-danger mt-5">Personal Details</h1>
 			
 			<div class="row mx-5 mt-3">
-				<h6><b>Favourite Books :</b>  <%if (user.getFavouritBooks() != null) {%><%=user.getFavouritBooks()%> <%}%></h6>
+				<h6><b>Favourite Books :</b>  <%
+  	if (user.getFavouritBooks() != null) {
+  %><%=user.getFavouritBooks()%> <%
+ 	}
+ %></h6>
 			</div>
 			<div class="row mx-5 mt-3">
-				<h6><b>Favourite Places : </b> <%if (user.getFavouritePlaces()!= null) {%><%=user.getFavouritePlaces()%> <%}%></h6>
+				<h6><b>Favourite Places : </b> <%
+ 	if (user.getFavouritePlaces()!= null) {
+ %><%=user.getFavouritePlaces()%> <%
+ 	}
+ %></h6>
 			</div>
 			<div class="row mx-5 mt-3">
-				<h6><b>Favourite Songs : </b> <%if (user.getFavouriteSongs() != null) {%><%=user.getFavouriteSongs()%> <%}%></h6>
+				<h6><b>Favourite Songs : </b> <%
+ 	if (user.getFavouriteSongs() != null) {
+ %><%=user.getFavouriteSongs()%> <%
+ 	}
+ %></h6>
 			</div>
 			
 		</div>
@@ -47,14 +68,14 @@
 		<div class="col-md-2 mt-3">
 			<a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Followers :<span> 
 				<%
-	 				if (request.getAttribute("countFollower") != null) 
-	 				{
-	 			%>
-	 					<%=request.getAttribute("countFollower")%></span>
+ 					if (profile.getCountFollowers() >0) 
+ 				 					 				{
+ 				%>
+	 					<%=profile.getCountFollowers()%></span>
 				<%
 					}
-	 				else 
-	 				{
+							 				else 
+							 				{
 				%>
 						0
 				<%
@@ -66,14 +87,14 @@
 		<div class="col-md-3 mt-3">
 			<a href="" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1">Following :<span> 
 				<%
-	 				if (request.getAttribute("countFollowing") != null) 
-	 				{
-	 			%>
-	 					<%=request.getAttribute("countFollowing")%></span>
+ 					if (profile.getCountFollowing() >0) 
+ 				 					 				{
+ 				%>
+	 					<%=profile.getCountFollowing()%></span>
 				<%
 					}
-	 				else 
-	 				{
+							 				else 
+							 				{
 				%>
 						0
 				<%
@@ -113,7 +134,7 @@
 							<div class="row">
 								<div class="col-md-1"></div>
 								<div class="col-md-5">
-									<a onclick="deletePost(<%=posts.get(i).getId() %>)" href="" class="mt-2">Delete</a>
+									<a onclick="deletePost(<%=posts.get(i).getId()%>)" href="" class="mt-2">Delete</a>
 								</div>
 								
 								<div class="col-md-5">
@@ -134,7 +155,7 @@
 					</div>
 				</div>
 	<%
-			}
+		}
 		} 
 		
 		else 

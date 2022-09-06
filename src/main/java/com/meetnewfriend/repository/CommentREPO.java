@@ -6,13 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.meetnewfriend.entities.CommentEntity;
-import com.meetnewfriend.entities.PostEntity;
+import com.meetnewfriend.entity.Comment;
+import com.meetnewfriend.entity.Post;
 
 @Repository
-public interface CommentREPO extends CrudRepository<CommentEntity,Integer>{
+public interface CommentREPO extends CrudRepository<Comment,Integer>{
 	
 	@Modifying
 	@Query(value="delete from comments where post_post_id=:post",nativeQuery=true)
-	public void deleteByPostPostId(@Param("post") PostEntity postId);
+	public void deleteByPostPostId(@Param("post") Post postId);
 }

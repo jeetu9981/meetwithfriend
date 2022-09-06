@@ -1,4 +1,4 @@
-package com.meetnewfriend.entities;
+package com.meetnewfriend.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="followers")
-public class FollowerEntity {
+public class Follower {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="follower_id")
@@ -21,7 +21,7 @@ public class FollowerEntity {
 	
 	@OneToOne
 	@JoinColumn(name="sendUserRequest")
-	private UserEntity sendUserRequest;
+	private User sendUserRequest;
 	
 	private boolean accept;
 	private boolean followBack;
@@ -30,7 +30,7 @@ public class FollowerEntity {
 
 	@Override
 	public String toString() {
-		return "FollowerEntity [id=" + id + ", acceptUser=" + acceptUser + ", sendUserRequest=" + sendUserRequest
+		return "Follower [id=" + id + ", acceptUser=" + acceptUser + ", sendUserRequest=" + sendUserRequest
 				+ ", accept=" + accept + ", followBack=" + followBack + "]";
 	}
 
@@ -58,11 +58,11 @@ public class FollowerEntity {
 		this.acceptUser = acceptUser;
 	}
 
-	public UserEntity getSendUserRequest() {
+	public User getSendUserRequest() {
 		return sendUserRequest;
 	}
 
-	public void setSendUserRequest(UserEntity sendUserRequest) {
+	public void setSendUserRequest(User sendUserRequest) {
 		this.sendUserRequest = sendUserRequest;
 	}
 

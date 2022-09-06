@@ -1,8 +1,6 @@
 package com.meetnewfriend.controller;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,10 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.meetnewfriend.dto.PostDto;
-import com.meetnewfriend.entities.PostEntity;
-import com.meetnewfriend.entities.UserEntity;
-import com.meetnewfriend.service.impl.CommentServiceImpl;
-import com.meetnewfriend.service.impl.LikeServiceImpl;
+import com.meetnewfriend.entity.Post;
 import com.meetnewfriend.service.impl.PostServiceImpl;
 
 @RestController
@@ -32,14 +28,7 @@ import com.meetnewfriend.service.impl.PostServiceImpl;
 public class PostController {
 	@Autowired
 	private PostServiceImpl postServiceImpl;
-	
-	
-	@Autowired
-	private CommentServiceImpl commentServiceImpl;
-	
-	
-	@Autowired
-	private LikeServiceImpl likeServiceImpl;
+
 	
 	//this api use for unavigate on user add post jsp.
 	@GetMapping("/addpost")
@@ -52,33 +41,13 @@ public class PostController {
 	
 	//this api is use for add user post
 	@PostMapping("/addpost")
-	public RedirectView post(@RequestParam("image") MultipartFile image,HttpServletRequest req) throws IOException {
+	public RedirectView post(@RequestParam("image1") MultipartFile image,@ModelAttribute Post post,HttpServletRequest req) throws IOException {
 		RedirectView rd=new RedirectView();
-		
-		//this peace if code use for upload image
-		String fileName=image.getOriginalFilename().trim();
-		InputStream is=image.getInputStream();
-		String path="C:\\Users\\DELL\\Documents\\workspace-sts-3.9.10.RELEASE\\meetnewfriend\\src\\main\\webapp\\images\\"+fileName;
-		System.out.println("Path : "+path);
-		int bytes=0;
-		FileOutputStream fs=new FileOutputStream(path);
-		while((bytes=is.read())!=-1)
-			fs.write(bytes);
-		fs.close();
-		
-		PostEntity postEntity=new PostEntity();
-		postEntity.setImage(fileName);
-		
 		HttpSession session=req.getSession();
-		UserEntity user=new UserEntity();
-		user.setId((int)session.getAttribute("userId"));
-		
-		postEntity.setUser(user);
-		postEntity.setDescription(req.getParameter("description"));
 		
 		//here we can save post
-		postEntity=this.postServiceImpl.addPost(postEntity);
-		if(postEntity!=null)
+		post=this.postServiceImpl.addPost(post,image,(int)session.getAttribute("userId"));
+		if(post!=null)
 			session.setAttribute("succMsg","Post Added Successfully....");
 		else
 			session.setAttribute("failMsf","Something went wrongy....");
@@ -92,9 +61,8 @@ public class PostController {
 	public ResponseEntity<PostDto> getPost(@RequestParam("postId") int postId,HttpServletRequest req) {
 		HttpSession session=req.getSession();
 		PostDto postDto=new PostDto();
-		System.out.println("PostId : "+postId);
 		
-		PostEntity post=this.postServiceImpl.getSinglePost(postId);
+		Post post=this.postServiceImpl.getSinglePost(postId);
 		postDto.setUser(post.getUser());
 		postDto.setLikes(post.getLikes());
 		postDto.setComments(post.getComments());
@@ -105,16 +73,13 @@ public class PostController {
 	}
 	
 	
-		//delete particular user post
-		@GetMapping("/deletepost")
-		public String deletePost(@RequestParam("postId") int postId,HttpServletRequest req) {
-			HttpSession session=req.getSession();
-			this.commentServiceImpl.deletePost(postId);
-			this.likeServiceImpl.deletePost(postId);
-			
-			this.postServiceImpl.deletePost(postId,(int)session.getAttribute("userId"));
-			return "success";
-		}
+	//delete particular user post
+	@GetMapping("/deletepost")
+	public String deletePost(@RequestParam("postId") int postId,HttpServletRequest req) {
+		HttpSession session=req.getSession();
+		this.postServiceImpl.delete(postId,(int)session.getAttribute("userId"));
+		return "success";
+	}
 }
 
 

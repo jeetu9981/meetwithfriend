@@ -37,17 +37,10 @@
 					%>
 					<li class="nav-item"><a class="nav-link	"
 						href="/user/dashboard">UserName : <%=session.getAttribute("userName")%></a></li>
+					<li class="nav-item"><a class="nav-link" href="/user/profile">Profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="../follower/checkrequest">Friend Request</a></li>	
 
 					<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
-
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-						role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Notifictaion </a>
-						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item" href="/user/profile">Profile</a></li>
-							<li><a class="dropdown-item" href="../follower/checkrequest">Friend Request</a></li>
-						</ul></li>
 
 				</ul>
 				<form class="d-flex" action="/user/searchuser" method="post">

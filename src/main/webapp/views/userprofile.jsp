@@ -1,14 +1,16 @@
 
-<%@page import="com.meetnewfriend.entities.FollowingEntity"%>
-<%@page import="com.meetnewfriend.entities.FollowerEntity"%>
-<%@page import="com.meetnewfriend.entities.RealFollowerEntity"%>
-<%@page import="com.meetnewfriend.entities.UserEntity"%>
+<%@page import="com.meetnewfriend.dto.ProfileDto"%>
+<%@page import="com.meetnewfriend.entity.Following"%>
+<%@page import="com.meetnewfriend.entity.Follower"%>
+<%@page import="com.meetnewfriend.entity.RealFollower"%>
+<%@page import="com.meetnewfriend.entity.User"%>
 <%@page import="java.util.List"%>
-<%@page import="com.meetnewfriend.entities.PostEntity"%>
+<%@page import="com.meetnewfriend.entity.Post"%>
 <%@page import="java.util.ArrayList"%>
 
 <%
-	UserEntity user = (UserEntity) request.getAttribute("user");
+	ProfileDto profile=(ProfileDto) request.getAttribute("profile");
+	User user = (User) profile.getUser();
 %>
 
 <%@include file="navbar.jsp"%>
@@ -19,8 +21,14 @@
 			<h1 class="text-center mt-5 text-primary">User Profile</h1>
 			<div class="row mt-5">
 				<div class="col-md-4">
-					<img alt="" src="../../images/<%=user.getImage()%>" height="100"
-						width="100" style="border-radius: 800px">
+						<%
+							if(user.getImage()!=null){
+						%><img alt="" src="../../images/<%=user.getImage()%>" height="200" width="200" style="border-radius: 800px"><%
+							}else{
+						%>
+				<img alt="" src="../../images/profile.png" height="200" width="200" style="border-radius: 800px"><%
+					}
+				%>
 					<div>
 						<label class="text-center text-dark">Name : <%=user.getName()%></label>
 					</div>
@@ -28,8 +36,8 @@
 				<div class="col-md-4">
 					<a href="" data-bs-toggle="modal" data-bs-target="#exampleModal"><h3>
 							Followers :<span> <%
- 	if (request.getAttribute("countFollower") != null) {
- %><%=request.getAttribute("countFollower")%></span>
+ 	if (profile.getCountFollowers()>0) {
+ %><%=profile.getCountFollowers()%></span>
 							<%
 								} else {
 							%>0<%
@@ -37,8 +45,8 @@
 							%>
 						</h3></a> <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal1"><h3>
 							Following :<span> <%
- 	if (request.getAttribute("countFollowing") != null) {
- %><%=request.getAttribute("countFollowing")%></span>
+ 	if (profile.getCountFollowing()>0) {
+ %><%=profile.getCountFollowing()%></span>
 							<%
 								} else {
 							%>0<%
@@ -71,7 +79,7 @@
 						</b>
 					</h6>
 					<h6>
-						Favourite Songss :<b> <%
+						Favourite Songs :<b> <%
  	if (user.getFavouriteSongs() != null) {
  %> <%=user.getFavouriteSongs()%> <%
  	}
@@ -91,8 +99,8 @@
 		<div class="row mb-5">
 			<h1 class="mt-5 text-center">All Upload Posts</h1>
 			<%
-				ArrayList<PostEntity> posts = (ArrayList<PostEntity>) request.getAttribute("allposts");
-				for (int i = 0; i < posts.size(); i++) {
+				ArrayList<Post> posts = (ArrayList<Post>) profile.getPosts();
+							for (int i = 0; i < posts.size(); i++) {
 			%>
 			<div class="col-md-3 mt-4">
 				<div class="card" style="width: 15rem;">
@@ -131,8 +139,8 @@
 
 
 	<%
-		ArrayList<RealFollowerEntity> followers = (ArrayList<RealFollowerEntity>) request.getAttribute("followers");
-		ArrayList<FollowingEntity> following = (ArrayList<FollowingEntity>) request.getAttribute("followings");
+		ArrayList<RealFollower> followers = (ArrayList<RealFollower>) profile.getFollowers();
+		ArrayList<Following> following = (ArrayList<Following>) profile.getFollowings();
 	%>
 
 	<!-- Modal -->
@@ -147,14 +155,20 @@
 				</div>
 
 				<%
-					for (RealFollowerEntity f : followers) {
+					for (RealFollower f : followers) {
 				%>
 
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-4">
-							<img alt="" src="../../images/<%=f.getFollower().getImage()%>"
-								height="50" width="50" style="border-radius: 800px">
+								<%
+									if(f.getFollower().getImage()!=null){
+								%><img alt="" src="../../images/<%=f.getFollower().getImage()%>" height="50" width="50" style="border-radius: 800px"><%
+									}else{
+								%>
+				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%
+					}
+				%>
 						</div>
 						<div class="col-md-4"><%=f.getFollower().getName()%></div>
 						<div class="col-md-4">
@@ -186,14 +200,14 @@
 				</div>
 
 				<%
-					for (FollowingEntity f : following) {
+					for (Following f : following) {
 				%>
 
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-4">
-							<img alt="" src="../../images/<%=f.getFollowing().getImage()%>"
-								height="50" width="50" style="border-radius: 800px">
+							<%if(f.getFollowing().getImage()!=null){ %><img alt="" src="../../images/<%=f.getFollowing().getImage()%>" height="50" width="50" style="border-radius: 800px"><%}else{ %>
+				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%} %>
 						</div>
 						<div class="col-md-4"><%=f.getFollowing().getName()%></div>
 						<div class="col-md-4">

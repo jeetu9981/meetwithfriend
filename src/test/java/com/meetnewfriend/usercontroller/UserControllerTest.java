@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.meetnewfriend.entities.UserEntity;
+import com.meetnewfriend.entity.User;
 import com.meetnewfriend.services.UserService;
 
 
@@ -17,7 +17,7 @@ public class UserControllerTest {
 	
 	@Test
 	public void emailAndPassword() {
-		UserEntity user=new UserEntity();
+		User user=new User();
 		user.setEmail("jitupatil961@gmail");
 		user.setPassword("1234");
 		user=this.userService.signin(user);

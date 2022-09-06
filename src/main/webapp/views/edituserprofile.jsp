@@ -1,7 +1,9 @@
-<%@page import="com.meetnewfriend.entities.UserEntity"%>
+<%@page import="com.meetnewfriend.entity.User"%>
 <%@include file="navbar.jsp"%>
 
-<%UserEntity user=(UserEntity)request.getAttribute("user"); %>
+<%
+	User user=(User)request.getAttribute("user");
+%>
 
 <div class="container mt-5">
 	<div class="row">
@@ -25,7 +27,7 @@
 				<div class="mb-3 mt-5">
 					<label for="exampleInputEmail1" class="form-label">Upload
 						your profile image address</label> <input type="file" class="form-control"
-						id="email" aria-describedby="emailHelp" name="image">
+						id="email" aria-describedby="emailHelp" name="image1">
 				</div>
 
 				<div class="mb-3">
@@ -34,13 +36,13 @@
 						if(user.getFavouriteSongs()!=null)
 						{
 					%> 
-							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="songs" value="<%=user.getFavouriteSongs() %>">
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouriteSongs" value="<%=user.getFavouriteSongs() %>">
 					<%	
 						}
 						else
 						{ 
 					%>
-							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="songs">
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouriteSongs">
 					<%
 						} 
 					%>
@@ -52,13 +54,13 @@
 						if(user.getFavouritePlaces()!=null)
 						{
 					%> 
-							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="places" value="<%=user.getFavouritePlaces() %>">
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouritePlaces" value="<%=user.getFavouritePlaces() %>">
 					<%	
 						}
 						else
 						{ 
 					%>
-							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="places">
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouritePlaces">
 					<%
 						} 
 					%>
@@ -70,13 +72,13 @@
 						if(user.getFavouritBooks()!=null)
 						{
 					%> 
-							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="books" value="<%=user.getFavouritBooks()%>">
+							<input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouritBooks" value="<%=user.getFavouritBooks()%>">
 					<%	
 						}
 						else
 						{ 
 					%>
-							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="books">
+							 <input type="text" class="form-control" id="email" aria-describedby="emailHelp" name="favouritBooks">
 					<%
 						} 
 					%>

@@ -8,14 +8,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.meetnewfriend.entities.PostEntity;
-import com.meetnewfriend.entities.UserEntity;
+import com.meetnewfriend.entity.Post;
+import com.meetnewfriend.entity.User;
 
 @Repository
-public interface PostRepo extends CrudRepository<PostEntity,Integer>{
-	public List<PostEntity> findByUserId(@Param("id") int id);
+public interface PostRepo extends CrudRepository<Post,Integer>{
+	public List<Post> findByUserId(@Param("id") int id);
 	
 	@Modifying
 	@Query(value="delete from posts where post_id=:post and user_id=:user",nativeQuery = true)
-	public void deletePost(@Param("post") PostEntity post,@Param("user") UserEntity user);
+	public void deletePost(@Param("post") Post post,@Param("user") User user);
 }
