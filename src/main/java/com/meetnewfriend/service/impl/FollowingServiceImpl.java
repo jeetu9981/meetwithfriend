@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.meetnewfriend.entity.Follower;
 import com.meetnewfriend.entity.Following;
 import com.meetnewfriend.entity.User;
+import com.meetnewfriend.repository.FollowerRepo;
 import com.meetnewfriend.repository.FollowingRepo;
 import com.meetnewfriend.services.FollowingService;
 
@@ -23,6 +24,9 @@ public class FollowingServiceImpl implements FollowingService{
 	
 	@Autowired
 	private RealFollowerServiceImpl realFollowerService;
+	
+	@Autowired 
+	private FollowerRepo followerRepo;
 	
 	//increase following of user
 	@Transactional
@@ -58,7 +62,8 @@ public class FollowingServiceImpl implements FollowingService{
 			}else {
 				//delete follower from other person and add this follower in follow back request
 				this.realFollowerService.deleteRealFollower(following,userId);
-				
+				System.out.println("Follow Request : "+following);
+				System.out.println("Real User : "+userId);
 				Follower follower = new Follower();
 				User user = new User();
 				user.setId(following);
@@ -68,10 +73,16 @@ public class FollowingServiceImpl implements FollowingService{
 				follower.setAcceptUser(userId);
 				
 				//we add this request in follow back request only
-				this.followerServiceImpl.addRequest(following,userId);
+				this.followerRepo.save(follower);
 			}
 			return 1;
 		}
 		return 0;
+	}
+
+
+	@Transactional
+	public int deleteFollowing(int blockUser, int realUser) {
+		return this.followingRepo.deleteByBlockUser(blockUser,realUser);
 	}
 }

@@ -22,4 +22,8 @@ public interface FollowingRepo extends CrudRepository<Following,Integer>{
 	@Modifying
 	@Query(value="delete from following where following=:follow and user_id=:userId",nativeQuery = true)
 	public int deleteFollowing(@Param("follow") User follow,@Param("userId") int userId);
+	
+	@Modifying
+	@Query(value="delete from following where following=:blockUser and user_id=:real",nativeQuery = true)
+	public int deleteByBlockUser(@Param("blockUser")int blockUser,@Param("real")int realUser);
 }

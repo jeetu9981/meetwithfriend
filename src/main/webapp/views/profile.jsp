@@ -109,7 +109,7 @@
 	<div class="row mt-5">
 		<div class="col-md-4"></div>
 		<div class="col-md-3">
-			<a class="btn btn-dark" href="../post/addpost">Add Post</a>
+			<a class="btn btn-dark" href="/post/addpost">Add Post</a>
 		</div>
 		<div class="col-md-4">
 			<a class="btn btn-dark" href="/user/edituserprofile?userId=<%=user.getId()%>">Edit Profile</a>

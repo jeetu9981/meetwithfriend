@@ -3,7 +3,7 @@
 <div class="container mt-5">
 	<div class="row">
 		<h1 class="text-center text-primary">Add Post..</h1>
-		<%@include file="succerror.jsp"%>
+		<%@include file="succorerror.jsp"%>
 		<div class="col-md-4"></div>
 		<div class="col-md-4">
 			<form class="mt-5" action="/post/addpost" method="post"

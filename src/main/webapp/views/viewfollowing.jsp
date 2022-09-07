@@ -26,10 +26,12 @@
 								<%if(f.getFollowing().getImage()!=null){ %><img alt="" src="../../images/<%=f.getFollowing().getImage()%>" height="50" width="50" style="border-radius: 800px"><%}else{ %>
 				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%} %>
 						</div>
-						<div class="col-md-4"><%=f.getFollowing().getName()%></div>
-						<div class="col-md-4">
-							<a
-								href="/following/unfollow?following=<%=f.getFollowing().getId()%>">Unfollow</a>
+						<div class="col-md-4"><%=f.getFollowing().getUserName()%></div>
+						<div class="col-md-2">
+							<a href="/following/unfollow?following=<%=f.getFollowing().getId()%>">Unfollow</a>
+						</div>
+						<div class="col-md-2">
+							<a href="/block/blockuser?blockuser=<%=f.getFollowing().getId()%>">Block</a>
 						</div>
 					</div>
 				</div>

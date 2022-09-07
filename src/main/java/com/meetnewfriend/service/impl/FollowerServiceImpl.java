@@ -38,6 +38,8 @@ public class FollowerServiceImpl implements FollowerService{
 		user.setId(sesssionUserId);
 		
 		if (realfollower == null && follower==null) {
+			System.out.println("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+			follower=new Follower();
 			follower.setAccept(false);
 			follower.setFollowBack(false);
 			follower.setSendUserRequest(user);

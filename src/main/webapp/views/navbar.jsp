@@ -20,7 +20,7 @@
 <title>Insert title here</title>
 </head>
 <body style="background-color: #F5F5F5">
-	<nav class="navbar navbar-expand-lg navbar-primary bg-dark">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="text:white">
 		<div class="container-fluid">
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -38,7 +38,8 @@
 					<li class="nav-item"><a class="nav-link	"
 						href="/user/dashboard">UserName : <%=session.getAttribute("userName")%></a></li>
 					<li class="nav-item"><a class="nav-link" href="/user/profile">Profile</a></li>
-					<li class="nav-item"><a class="nav-link" href="../follower/checkrequest">Friend Request</a></li>	
+					<li class="nav-item"><a class="nav-link" href="../follower/checkrequest">Friend Request</a></li>
+					<li class="nav-item"><a class="nav-link" href="../block/getAllBlocks">Block User</a></li>	
 
 					<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
 

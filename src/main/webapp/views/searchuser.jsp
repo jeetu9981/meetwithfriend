@@ -1,9 +1,10 @@
-<%@page import="com.meetnewfriend.entity.User"%>
+<%@page import="com.meetnewfriend.dto.SerachUserDto"%>
 <%@page import="java.util.ArrayList"%>
 <%@include file="navbar.jsp"%> 
 
 <%
- 	ArrayList<User> user = (ArrayList<User>) request.getAttribute("users");
+ 	ArrayList<SerachUserDto> user = (ArrayList<SerachUserDto>) request.getAttribute("users");
+	
  %>
 
 <div class="container mt-5">
@@ -16,12 +17,29 @@
 		<div class="col-md-3">
 			<div class="row mt-5">
 				<div class="col-md-6">
-						<%if(user.get(i).getImage()!=null){ %><img alt="" src="../../images/<%=user.get(i).getImage()%>" height="200" width="200" style="border-radius: 800px"><%}else{ %>
+						<%if(user.get(i).getUser().getImage()!=null){ %><img alt="" src="../../images/<%=user.get(i).getUser().getImage()%>" height="100" width="100" style="border-radius: 800px"><%}else{ %>
 				<img alt="" src="../../images/profile.png" height="100" width="100" style="border-radius: 800px"><%} %>
 					<div>
-						<label class="text-center text-dark">Name : <%=user.get(i).getName()%></label>
+						<label class="text-center text-dark">Name : <%=user.get(i).getUser().getUserName()%></label>
 					</div>
-					<h3><a href="/follower/followrequest?userId=<%=user.get(i).getId()%>">Follow</a></h3>
+					<%
+						if(user.get(i).isFollowStatus())
+						{
+					%>		
+							<h3><a href="/following/unfollow?following=<%=user.get(i).getUser().getId()%>">UnFollow</a></h3>
+					<%
+						}
+						else if(user.get(i).isFollowBackStatus())
+						{
+					%>	
+							<h3><a href="/follower/followback?userId=<%=user.get(i).getUser().getId()%>">Follow Back</a></h3>
+					<% 
+						}else{
+					%>
+						<h3><a href="/follower/followrequest?userId=<%=user.get(i).getUser().getId()%>">Follow</a></h3>
+					<%
+						} 
+					%>
 				</div>
 			</div>
 		</div>

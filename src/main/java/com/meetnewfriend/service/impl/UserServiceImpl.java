@@ -14,10 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.meetnewfriend.controller.UserController;
 import com.meetnewfriend.dto.DashboardDto;
 import com.meetnewfriend.dto.ProfileDto;
+import com.meetnewfriend.dto.SerachUserDto;
+import com.meetnewfriend.entity.Block;
+import com.meetnewfriend.entity.Follower;
 import com.meetnewfriend.entity.Following;
 import com.meetnewfriend.entity.Post;
 import com.meetnewfriend.entity.RealFollower;
 import com.meetnewfriend.entity.User;
+import com.meetnewfriend.repository.BlockRepo;
 import com.meetnewfriend.repository.UserRepo;
 import com.meetnewfriend.services.UserService;
 
@@ -38,6 +42,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PostServiceImpl postServiceImpl;
+	
+	@Autowired
+	private FollowerServiceImpl followerServiceImpl;
+	
+	@Autowired
+	private BlockRepo blockRepo;
 
 	// Add user
 	public String addUser(User user) {
@@ -81,7 +91,11 @@ public class UserServiceImpl implements UserService {
 
 	// this method is use for save first time detail of user when he/she login first
 	// time in application
-	public boolean updateUserDetail(int id, User user, MultipartFile image) {
+	public String updateUserDetail(int id, User user, MultipartFile image) {
+		
+//		if(user.getName().contentEquals("") || user.getEmail().contentEquals(""))
+//			return "nameinvalid";
+		
 		if (!image.isEmpty()) {
 			// this peace of code use for upload image
 			String fileName = image.getOriginalFilename().trim();
@@ -97,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
 				user.setImage(fileName);
 			} catch (Exception e) {
-				return false;
+				return "fail";
 			}
 		} else {
 			User user1 = this.getUser(id);
@@ -105,8 +119,8 @@ public class UserServiceImpl implements UserService {
 		}
 		if (this.userRepo.updateUserDeatil(user.getFavouritBooks(), user.getFavouritePlaces(),
 				user.getFavouriteSongs(), user.getImage(), id) > 0)
-			return true;
-		return false;
+			return "success";
+		return "fail";
 	}
 
 	// this method is use for get user
@@ -115,8 +129,68 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// get user by name
-	public List<User> search(String name) {
-		return this.userRepo.findByName(name);
+	public List<SerachUserDto> search(String name,int userId) {
+		ArrayList<User> users=(ArrayList<User>) this.userRepo.findByName(name);
+		ArrayList<Block> blocks=(ArrayList<Block>) this.blockRepo.findAll();
+		
+		ArrayList<User> newUsers=new ArrayList<User>();
+		
+		//here we select only unblock users
+		boolean status;
+		for(int i=0;i<users.size();i++) {
+			status=true;
+			for(int j=0;j<blocks.size();j++) {
+				if(blocks.get(j).getBlockUser().getId()==users.get(i).getId() && blocks.get(j).getRealUser().getId()==userId)
+				{
+					status=false;
+					break;
+				}
+			}
+			if(status)
+				newUsers.add(users.get(i));
+		}
+		
+		//after selecting ublock user we can elect follow or unfollow user
+		ArrayList<SerachUserDto> searchUsers=new ArrayList<SerachUserDto>();
+		
+		List<RealFollower> realFollowers=this.realFollowerServiceImpl.getFollower(userId);
+		List<Follower> follower=this.followerServiceImpl.getRequest(userId);
+		
+		
+		for(int i=0;i<newUsers.size();i++) {
+			status=true;
+			SerachUserDto userDto=new SerachUserDto();
+			for(int j=0;j<realFollowers.size();j++) {
+				//check can we follow before or not if follow then set followstatus true
+				if(realFollowers.get(j).getFollower().getId()==newUsers.get(i).getId())
+				{
+					status=false;
+					break;
+				}
+			}
+			if(status) {
+				userDto.setFollowStatus(false);
+				userDto.setUser(newUsers.get(i));
+			}else {
+				for(int j=0;j<follower.size();j++) {
+					//check if user already sent request or not
+					if(follower.get(j).getAccept() && follower.get(j).getSendUserRequest().getId()==newUsers.get(i).getId()) {
+						status=true;
+						break;
+					}
+						
+				}
+				if(status) {
+					userDto.setFollowBackStatus(true);
+					userDto.setUser(newUsers.get(i));
+				}else {
+					userDto.setFollowStatus(true);
+					userDto.setUser(newUsers.get(i));
+				}
+			}
+			searchUsers.add(userDto);
+		}
+		return searchUsers;
 	}
 
 	// Edit user profile

@@ -22,7 +22,7 @@
 						<%if(user.get(i).getSendUserRequest().getImage()!=null){ %><img alt="" src="../../images/<%=user.get(i).getSendUserRequest().getImage()%>" height="200" width="200" style="border-radius: 800px"><%}else{ %>
 				<img alt="" src="../../images/profile.png" height="100" width="100" style="border-radius: 800px"><%} %>
 					<div>
-						<label class="text-center text-dark">Name : <%=user.get(i).getSendUserRequest().getName()%></label>
+						<label class="text-center text-dark">Name : <%=user.get(i).getSendUserRequest().getUserName()%></label>
 					</div>
 					<h6>
 						<%

@@ -29,7 +29,7 @@
 								<%if(f.getFollower().getImage()!=null){ %><img alt="" src="../../images/<%=f.getFollower().getImage()%>" height="50" width="50" style="border-radius: 800px"><%}else{ %>
 				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%} %>
 						</div>
-						<div class="col-md-4"><%=f.getFollower().getName()%></div>
+						<div class="col-md-4"><%=f.getFollower().getUserName()%></div>
 					</div>
 				</div>
 				<%

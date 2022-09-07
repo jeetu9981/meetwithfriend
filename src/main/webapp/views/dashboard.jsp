@@ -50,7 +50,7 @@
 					</a>
 				</div>
 				<div class="col-md-6 mt-3">
-					<h6><%=post.getUser().getName()%></h6>
+					<h6><%=post.getUser().getUserName()%></h6>
 				</div>
 				<div class="col-md-3"></div>
 		</div>

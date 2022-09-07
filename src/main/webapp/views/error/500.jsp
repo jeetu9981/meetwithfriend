@@ -1,12 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-<h1>This is error</h1>
-</body>
-</html>
+<%
+	if(session.getAttribute("userId")!=null)
+	{	
+%>
+		<script>
+			window.location = "http://localhost:8080/user/profile";
+		</script>	
+<%
+	}
+	else
+	{
+%>
+		<script>
+			window.location = "http://localhost:8080/user/signinjsp";
+		</script>
+<%
+	}
+%>

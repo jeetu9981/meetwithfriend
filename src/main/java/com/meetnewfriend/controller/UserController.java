@@ -21,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.meetnewfriend.CreateCaptcha;
 import com.meetnewfriend.dto.DashboardDto;
 import com.meetnewfriend.dto.ProfileDto;
+import com.meetnewfriend.dto.SerachUserDto;
 import com.meetnewfriend.entity.User;
 import com.meetnewfriend.service.impl.UserServiceImpl;
 
@@ -61,7 +62,6 @@ public class UserController {
 	//this api is for signup the user
 	@PostMapping("/signup")
 	public RedirectView signup(@ModelAttribute User user,HttpServletRequest req) throws IOException{
-		System.out.println("Inside...............");
 		HttpSession session=req.getSession();
 		RedirectView md = new RedirectView();
 		
@@ -133,8 +133,8 @@ public class UserController {
 	public RedirectView updateDeatail(@RequestParam("image1") MultipartFile image,@ModelAttribute User user,HttpServletRequest req)  {
 		HttpSession session=req.getSession();
 		RedirectView rd=new RedirectView();
-		boolean status=this.userServiceImpl.updateUserDetail((int)session.getAttribute("userId"),user,image);
-		if(status) {
+		String status=this.userServiceImpl.updateUserDetail((int)session.getAttribute("userId"),user,image);
+		if(status.equals("success")) {
 			rd.setUrl("profile");
 			session.setAttribute("succMsg","Welcom to meet with new friends...");
 		}else {
@@ -204,7 +204,7 @@ public class UserController {
 		ModelAndView md=new ModelAndView();
 		String name=req.getParameter("serachvalue");
 		//get user by name
-		List<User> users=this.userServiceImpl.search(name);
+		List<SerachUserDto> users=this.userServiceImpl.search(name,(int)req.getSession().getAttribute("userId"));
 		md.addObject("users",users);
 		md.setViewName("searchuser");
 		return md;
@@ -216,10 +216,15 @@ public class UserController {
 	public RedirectView update(@RequestParam("image1") MultipartFile image,@ModelAttribute User user,HttpServletRequest req) throws IOException {
 		RedirectView rd=new RedirectView();
 		HttpSession session=req.getSession();
-		boolean status=this.userServiceImpl.updateUserDetail((int)session.getAttribute("userId"),user,image);
-		if(status)
+		String status=this.userServiceImpl.updateUserDetail((int)session.getAttribute("userId"),user,image);
+		if(status.equals("success"))
 			session.setAttribute("succMsg","updtaedSuccessfully");
-		else
+		else if(status.equals("nameinvalid")) {
+			rd.setUrl("/user/edituserprofile?userId="+user.getId());
+			session.setAttribute("failMsg","Name or email can't be null.......");
+			return rd;
+		}
+		else if(status.equals("fail"))
 			session.setAttribute("failMsg","Something went wrong.......");
 		rd.setUrl("/user/profile");
 		return rd;

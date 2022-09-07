@@ -31,7 +31,6 @@ public class FollowerController {
 	public RedirectView SendRequest(@RequestParam("userId") int userId, HttpServletRequest req) {
 		RedirectView rd = new RedirectView();
 		HttpSession session = req.getSession();
-		
 		String status=this.followerServiceImpl.addRequest(userId,(int) session.getAttribute("userId"));
 
 		if(status.equals("success")) 
