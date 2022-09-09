@@ -43,9 +43,15 @@
 						%>
 					</h6>
 					<h6>
-						<a
-							href="/follower/followback?userId=<%=user.get(i).getSendUserRequest().getId()%>">Follow
-							Back</a>
+						<%
+							if(!user.get(i).getFollowBack()){
+						%>
+							<a
+								href="/follower/followback?userId=<%=user.get(i).getSendUserRequest().getId()%>">Follow
+								Back</a>
+						<%
+							}
+						%>
 					</h6>
 				</div>
 			</div>

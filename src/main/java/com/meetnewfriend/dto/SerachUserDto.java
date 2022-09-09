@@ -6,6 +6,15 @@ public class SerachUserDto {
 	private User user;
 	private boolean followStatus;
 	private boolean followBackStatus;
+	private boolean declineRequest;
+	
+	
+	public boolean isDeclineRequest() {
+		return declineRequest;
+	}
+	public void setDeclineRequest(boolean declineRequest) {
+		this.declineRequest = declineRequest;
+	}
 	public User getUser() {
 		return user;
 	}

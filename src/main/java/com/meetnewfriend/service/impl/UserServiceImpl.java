@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
 		userName = userName.substring(0, 1).toUpperCase() + userName.substring(1);
 		user.setUserName(userName);
 		user.setLoginFirst(false);
+		
 
 		if (user.getCaptcha().equals(UserController.hidden)) {
 			if (this.userRepo.save(user)!= null) {
@@ -153,40 +154,51 @@ public class UserServiceImpl implements UserService {
 		//after selecting ublock user we can elect follow or unfollow user
 		ArrayList<SerachUserDto> searchUsers=new ArrayList<SerachUserDto>();
 		
-		List<RealFollower> realFollowers=this.realFollowerServiceImpl.getFollower(userId);
-		List<Follower> follower=this.followerServiceImpl.getRequest(userId);
+		List<Following> realFollowers=this.followingServiceImpl.getFollowing(userId);
 		
-		
+		SerachUserDto userDto;
 		for(int i=0;i<newUsers.size();i++) {
+			System.out.println("REAL : "+realFollowers.size());
 			status=true;
-			SerachUserDto userDto=new SerachUserDto();
-			for(int j=0;j<realFollowers.size();j++) {
-				//check can we follow before or not if follow then set followstatus true
-				if(realFollowers.get(j).getFollower().getId()==newUsers.get(i).getId())
+			userDto=new SerachUserDto();
+			//check can we follow before or not if follow then set followstatus true
+			for(int j=0;j<realFollowers.size();j++) 
+			{
+				if(realFollowers.get(j).getFollowing().getId()==newUsers.get(i).getId())
 				{
 					status=false;
 					break;
 				}
 			}
-			if(status) {
-				userDto.setFollowStatus(false);
-				userDto.setUser(newUsers.get(i));
-			}else {
-				for(int j=0;j<follower.size();j++) {
-					//check if user already sent request or not
-					if(follower.get(j).getAccept() && follower.get(j).getSendUserRequest().getId()==newUsers.get(i).getId()) {
-						status=true;
-						break;
+			if(status)
+			{
+				Follower follower=this.followerServiceImpl.getFollowerRequest(userId,newUsers.get(i).getId());
+				if(follower!=null) {
+					if(follower.getAccept()) {
+						userDto.setFollowBackStatus(true);
+						userDto.setUser(newUsers.get(i));
 					}
-						
+					else if(!follower.getFollowBack() && !follower.getAccept() && userId!=follower.getAcceptUser())
+					{
+						userDto.setDeclineRequest(true);
+						userDto.setUser(newUsers.get(i));
+					}
 				}
-				if(status) {
-					userDto.setFollowBackStatus(true);
-					userDto.setUser(newUsers.get(i));
-				}else {
-					userDto.setFollowStatus(true);
-					userDto.setUser(newUsers.get(i));
+				else {
+					follower=this.followerServiceImpl.getFollowerRequest(newUsers.get(i).getId(),userId);
+					if(follower!=null) {
+						userDto.setFollowBackStatus(true);
+						userDto.setUser(newUsers.get(i));
+					}else {
+						userDto.setFollowStatus(false);
+						userDto.setUser(newUsers.get(i));
+					}
 				}
+			}
+			else
+			{
+				userDto.setFollowStatus(true);
+				userDto.setUser(newUsers.get(i));
 			}
 			searchUsers.add(userDto);
 		}
@@ -232,18 +244,19 @@ public class UserServiceImpl implements UserService {
 	public DashboardDto getDashboard(int userId) {
 		DashboardDto dashboard = new DashboardDto();
 		// here we will get all followers
-		List<RealFollower> followers = this.realFollowerServiceImpl.getFollower(userId);
+//		List<RealFollower> followers = this.realFollowerServiceImpl.getFollower(userId);
+		List<Following> followers=this.followingServiceImpl.getFollowing(userId);
 		ArrayList<Integer> allUsersId = new ArrayList<Integer>();
 
 		// get all followers id with the help of them id we can find them all posts
-		for (RealFollower p : followers) {
-			allUsersId.add(p.getFollower().getId());
+		for (Following p : followers) {
+			allUsersId.add(p.getFollowing().getId());
 		}
 
 		// here we will get our follower all posts
 		List<Post> posts = this.postServiceImpl.getAllPost(allUsersId);
 
-		dashboard.setFollowers(followers);
+		dashboard.setFollowing(followers);
 		dashboard.setPosts(posts);
 		return dashboard;
 	}

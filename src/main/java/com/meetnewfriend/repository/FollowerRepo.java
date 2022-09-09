@@ -17,6 +17,8 @@ public interface FollowerRepo extends CrudRepository<Follower, Integer>{
 	@Query(value="select * from followers where accept_user=:id and accept=:accept or (accept_user=:id and follow_back=:follow)",nativeQuery = true)
 	public List<Follower> findByUserIdAndAccept(@Param("id") int id,@Param("accept") boolean accept,@Param("follow") boolean follow);
 	
+	@Query(value="select * from followers where send_user_request=:id and accept_user=:acceptUser ",nativeQuery = true)
+	public Follower findByUserIdAndAcceptAndSendUser(@Param("id") int id,@Param("acceptUser") int acceptUser);
 	
 	@Modifying
 	@Query(value="update followers set accept=:a where accept_user=:acceptUser and send_user_request=:userId",nativeQuery = true)

@@ -26,7 +26,6 @@
 				 var likecount=$("#likecount"+postId).text();
 				
 				likecount=parseInt(likecount)+1;
-				console.log("inside like");
 				$("#likcount"+postId).html(likecount);
 				
 					$("#addlike"+postId).removeClass("fa fa-heart-o");

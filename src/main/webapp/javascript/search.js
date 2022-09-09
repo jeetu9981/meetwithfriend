@@ -1,15 +1,11 @@
-function search(){
-	var searchvalue=$("#searchvalue").val();
-	console.log("RESULT : "+searchvalue)
+function follow(id){
+	console.log("ID : "+id);
 	$.ajax({
-		url:"/user/searchuser?searchvalue="+searchvalue,
+		url:"/follower/followrequest?userId="+id,
 		success : function(result){
-			if(result!=null){
-				$(".frontpage").html("");
-			    $("#fix").html(result);
-			}
-			else
-				$("#fix").html("");
+			console.log(result)
+			if(result=="success")
+				location.reload();
 		}
 	});
 }

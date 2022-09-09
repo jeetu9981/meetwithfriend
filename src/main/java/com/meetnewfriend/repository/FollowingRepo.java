@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.meetnewfriend.entity.Following;
+import com.meetnewfriend.entity.RealFollower;
 import com.meetnewfriend.entity.User;
 
 @Repository
@@ -26,4 +27,8 @@ public interface FollowingRepo extends CrudRepository<Following,Integer>{
 	@Modifying
 	@Query(value="delete from following where following=:blockUser and user_id=:real",nativeQuery = true)
 	public int deleteByBlockUser(@Param("blockUser")int blockUser,@Param("real")int realUser);
+	
+	
+	@Query("select rf from Following rf where rf.user_id=:userId")
+	public List<Following> findAllById(@Param("userId") int userId);
 }

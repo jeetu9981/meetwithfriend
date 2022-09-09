@@ -7,7 +7,7 @@
 		<div class="col-md-4">
 			<h1 class="text-center text-primary">Registration Form</h1>
 			<form onsubmit="return validate()" class="mt-5" action="/user/signup"
-				method="post">
+				method="get">
 				<div class="mb-3">
 					<label for="exampleInputPassword1" class="form-label">Name</label>
 					<input type="text" class="form-control" id="name" name="name">

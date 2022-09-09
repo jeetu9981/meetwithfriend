@@ -60,7 +60,7 @@ public class UserController {
 	
 
 	//this api is for signup the user
-	@PostMapping("/signup")
+	@GetMapping("/signup")
 	public RedirectView signup(@ModelAttribute User user,HttpServletRequest req) throws IOException{
 		HttpSession session=req.getSession();
 		RedirectView md = new RedirectView();
@@ -199,13 +199,17 @@ public class UserController {
 	
 	
 	//search user by their name
-	@PostMapping("/searchuser")
+	@GetMapping("/searchuser")
 	public ModelAndView search(HttpServletRequest req){
 		ModelAndView md=new ModelAndView();
 		String name=req.getParameter("serachvalue");
 		//get user by name
 		List<SerachUserDto> users=this.userServiceImpl.search(name,(int)req.getSession().getAttribute("userId"));
-		md.addObject("users",users);
+		System.out.println(users.isEmpty());
+		if(!users.isEmpty())
+			md.addObject("users",users);
+		else
+			md.addObject("users", null);
 		md.setViewName("searchuser");
 		return md;
 	}

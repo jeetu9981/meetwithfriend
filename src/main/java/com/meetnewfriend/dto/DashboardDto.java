@@ -2,17 +2,20 @@ package com.meetnewfriend.dto;
 
 import java.util.List;
 
+import com.meetnewfriend.entity.Following;
 import com.meetnewfriend.entity.Post;
-import com.meetnewfriend.entity.RealFollower;
 
 public class DashboardDto {
-	private List<RealFollower> followers;
+	private List<Following> following;
 	private List<Post> posts;
-	public List<RealFollower> getFollowers() {
-		return followers;
+	
+	
+	
+	public List<Following> getFollowing() {
+		return following;
 	}
-	public void setFollowers(List<RealFollower> followers) {
-		this.followers = followers;
+	public void setFollowing(List<Following> following) {
+		this.following = following;
 	}
 	public List<Post> getPosts() {
 		return posts;

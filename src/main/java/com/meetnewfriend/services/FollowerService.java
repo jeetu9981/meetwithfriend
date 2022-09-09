@@ -22,4 +22,6 @@ public interface FollowerService {
 		
 	//follow back
 	public boolean saveFollower(int acceptUser,int userId);
+	
+	public Follower getFollowerRequest(int userId,int acceptUser);
 }

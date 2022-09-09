@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.meetnewfriend.entity.Follower;
 import com.meetnewfriend.entity.Following;
+import com.meetnewfriend.entity.RealFollower;
 import com.meetnewfriend.entity.User;
 import com.meetnewfriend.repository.FollowerRepo;
 import com.meetnewfriend.repository.FollowingRepo;
@@ -84,5 +85,10 @@ public class FollowingServiceImpl implements FollowingService{
 	@Transactional
 	public int deleteFollowing(int blockUser, int realUser) {
 		return this.followingRepo.deleteByBlockUser(blockUser,realUser);
+	}
+	
+	//get user followers
+	public List<Following> getFollowing(int userId){
+		return this.followingRepo.findAllById(userId);
 	}
 }

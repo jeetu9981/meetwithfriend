@@ -27,29 +27,20 @@ public class FollowerServiceImpl implements FollowerService{
 	
 	//add follow request
 	public String addRequest(int userId,int sesssionUserId){
-		Follower follower = new Follower();
-		//check already user following or not
-		RealFollower realfollower = this.realFollowerServiceImpl.checkExistOrNot(userId,sesssionUserId);
-
-		//check user sent before request or not in follower requets
-		follower = this.checkExixtOrNot(userId,sesssionUserId);
+		Follower follower =null;
 		
 		User user = new User();
 		user.setId(sesssionUserId);
 		
-		if (realfollower == null && follower==null) {
-			System.out.println("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-			follower=new Follower();
-			follower.setAccept(false);
-			follower.setFollowBack(false);
-			follower.setSendUserRequest(user);
-			follower.setAcceptUser(userId);
-			if(this.followerRepo.save(follower)!=null)
-				return "success";
-			else
-				return "fail";
-		}else
-			return "already";
+		follower=new Follower();
+		follower.setAccept(false);
+		follower.setFollowBack(false);
+		follower.setSendUserRequest(user);
+		follower.setAcceptUser(userId);
+		if(this.followerRepo.save(follower)!=null)
+			return "success";
+		else
+			return "fail";
 		
 	}
 	
@@ -58,6 +49,10 @@ public class FollowerServiceImpl implements FollowerService{
 		boolean accept=false;
 		boolean follow=false;
 		return this.followerRepo.findByUserIdAndAccept(id,accept,follow);
+	}
+	
+	public Follower getFollowerRequest(int userId,int acceptUser){
+		return this.followerRepo.findByUserIdAndAcceptAndSendUser(userId,acceptUser);
 	}
 	
 	//delete follow request of other user
@@ -70,7 +65,12 @@ public class FollowerServiceImpl implements FollowerService{
 	@Transactional
 	public int accept(int acceptUser,int userId){
 		boolean a=true;
-		if(this.followerRepo.updateAcceptRequest(a,acceptUser,userId)>0) {
+		int i=this.followerRepo.updateAcceptRequest(a,acceptUser,userId);
+		if(i>0) {
+			Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
+			if(follower.getAccept() && follower.getFollowBack()) {
+				this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId);
+			}
 			RealFollower realFollower = new RealFollower();
 			User user = new User();
 			user.setId(userId);
@@ -101,22 +101,37 @@ public class FollowerServiceImpl implements FollowerService{
 	//followback
 	@Transactional
 	public boolean saveFollower(int acceptUser,int userId) {
-		RealFollower realFollower = new RealFollower();
-		User user = new User();
-		user.setId(acceptUser);
-		realFollower.setFollower(user);
-		realFollower.setUser_id(userId);
+//		RealFollower realFollower = new RealFollower();
+//		User user = new User();
+//		user.setId(acceptUser);
+//		realFollower.setFollower(user);
+//		realFollower.setUser_id(userId);
 
-		Following following = new Following();
-		User user1 = new User();
-		user1.setId(userId);
-		following.setFollowing(user1);
-		following.setUser_id(acceptUser);
+//		Following following = new Following();
+//		User user1 = new User();
+//		user1.setId(userId);
+//		following.setFollowing(user1);
+//		following.setUser_id(acceptUser);
 
 		//here we add following of one user and add increase follower of one user and delete follow request
-		if (this.followingServiceImpl.addfollowing(following) != null&& this.realFollowerServiceImpl.addFollower(realFollower) != null) {
-			this.deleteRequest(acceptUser, userId);
-			return true;
+//		if (this.followingServiceImpl.addfollowing(following) != null&& this.realFollowerServiceImpl.addFollower(realFollower) != null) {
+//			this.deleteRequest(acceptUser, userId);
+//			return true;
+//		}
+		
+		if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
+		{
+			System.out.println("Deleted.............");
+			Follower follower =new Follower();
+			User user = new User();
+			user.setId(acceptUser);
+			
+			follower.setAccept(false);
+			follower.setFollowBack(true);
+			follower.setSendUserRequest(user);
+			follower.setAcceptUser(userId);
+			if(this.followerRepo.save(follower)!=null)
+				return true;
 		}
 		return false;
 	}

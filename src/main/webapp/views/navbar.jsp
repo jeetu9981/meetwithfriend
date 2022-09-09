@@ -44,8 +44,8 @@
 					<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
 
 				</ul>
-				<form class="d-flex" action="/user/searchuser" method="post">
-					<input id="searchvalue" class="form-control me-2" type="search" placeholder="Search"
+				<form class="d-flex" action="/user/searchuser" method="get">
+					<input id="searchvalue" class="form-control me-2 " type="search" placeholder="Search"
 						aria-label="Search" name="serachvalue">
 					<button class="btn btn-outline-success" type="submit">Search</button>
 				</form>
@@ -60,4 +60,4 @@
 </html>
 
 
-<script src="../../javascript/search.js"></script>
+<!-- <script src="../../javascript/search.js"></script> -->

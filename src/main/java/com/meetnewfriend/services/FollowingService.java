@@ -18,4 +18,5 @@ public interface FollowingService {
 	public int delete(int following,int userId);
 	
 	public int deleteFollowing(int blockUser,int realUser);
+	public List<Following> getFollowing(int userId);
 }
