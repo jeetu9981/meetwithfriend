@@ -141,7 +141,8 @@ public class UserServiceImpl implements UserService {
 		for(int i=0;i<users.size();i++) {
 			status=true;
 			for(int j=0;j<blocks.size();j++) {
-				if(blocks.get(j).getBlockUser().getId()==users.get(i).getId() && blocks.get(j).getRealUser().getId()==userId)
+				if(blocks.get(j).getBlockUser().getId()==userId && blocks.get(j).getRealUser().getId()==users.get(i).getId()
+				|| blocks.get(j).getBlockUser().getId()==users.get(i).getId() && blocks.get(j).getRealUser().getId()==userId)
 				{
 					status=false;
 					break;
@@ -154,17 +155,16 @@ public class UserServiceImpl implements UserService {
 		//after selecting ublock user we can elect follow or unfollow user
 		ArrayList<SerachUserDto> searchUsers=new ArrayList<SerachUserDto>();
 		
-		List<Following> realFollowers=this.followingServiceImpl.getFollowing(userId);
+		List<Following> following=this.followingServiceImpl.getFollowing(userId);
 		
 		SerachUserDto userDto;
 		for(int i=0;i<newUsers.size();i++) {
-			System.out.println("REAL : "+realFollowers.size());
 			status=true;
 			userDto=new SerachUserDto();
 			//check can we follow before or not if follow then set followstatus true
-			for(int j=0;j<realFollowers.size();j++) 
+			for(int j=0;j<following.size();j++) 
 			{
-				if(realFollowers.get(j).getFollowing().getId()==newUsers.get(i).getId())
+				if(following.get(j).getFollowing().getId()==newUsers.get(i).getId())
 				{
 					status=false;
 					break;

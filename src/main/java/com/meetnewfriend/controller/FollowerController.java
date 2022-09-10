@@ -99,9 +99,12 @@ public class FollowerController {
 		//user can delete follow request of other user
 		int i=this.followerServiceImpl.deleteRequest((int)session.getAttribute("userId"), requestUser);
 		if(i>0)
+		{
 			session.setAttribute("succMsg","Request Decline Successsfully.....");
+		}
 		else
 			session.setAttribute("failMsg","Something went wrong...");
+		
 		rd.setUrl("/user/dashboard");
 		return rd;
 	}

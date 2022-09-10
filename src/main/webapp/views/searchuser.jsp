@@ -36,7 +36,7 @@
 						<% 
 							}else if(user.get(i).isDeclineRequest()){
 						%>
-							<h3><a href="/follower/followrequest?userId=<%=user.get(i).getUser().getId()%>">Decline Request</a></h3>
+							<h3><a href="/follower/declinerequest?userId=<%=user.get(i).getUser().getId()%>">Decline Request</a></h3>
 						<%
 							}else{
 						%>

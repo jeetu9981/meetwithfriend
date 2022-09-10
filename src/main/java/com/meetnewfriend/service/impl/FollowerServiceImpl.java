@@ -58,7 +58,28 @@ public class FollowerServiceImpl implements FollowerService{
 	//delete follow request of other user
 	@Transactional
 	public int deleteRequest(int acceptUser,int userId){
-		return this.followerRepo.deleteByUserIdAndFollowerId(acceptUser,userId);
+		Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
+
+		if(follower!=null) {
+			if(follower.getFollowBack()) {
+				User user = new User();
+				user.setId(acceptUser);
+				
+				follower.setAccept(true);
+				follower.setFollowBack(false);
+				follower.setSendUserRequest(user);
+				follower.setAcceptUser(userId);
+				if(this.followerRepo.save(follower)!=null)
+					return 1;
+			}else {
+				return this.followerRepo.deleteByUserIdAndFollowerId(acceptUser,userId);
+			}
+		}
+		else {
+			return this.followerRepo.deleteByUserIdAndFollowerId(userId,acceptUser);
+		}
+
+		return 0;
 	}
 	
 	//accept request
@@ -101,27 +122,8 @@ public class FollowerServiceImpl implements FollowerService{
 	//followback
 	@Transactional
 	public boolean saveFollower(int acceptUser,int userId) {
-//		RealFollower realFollower = new RealFollower();
-//		User user = new User();
-//		user.setId(acceptUser);
-//		realFollower.setFollower(user);
-//		realFollower.setUser_id(userId);
-
-//		Following following = new Following();
-//		User user1 = new User();
-//		user1.setId(userId);
-//		following.setFollowing(user1);
-//		following.setUser_id(acceptUser);
-
-		//here we add following of one user and add increase follower of one user and delete follow request
-//		if (this.followingServiceImpl.addfollowing(following) != null&& this.realFollowerServiceImpl.addFollower(realFollower) != null) {
-//			this.deleteRequest(acceptUser, userId);
-//			return true;
-//		}
-		
 		if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
 		{
-			System.out.println("Deleted.............");
 			Follower follower =new Follower();
 			User user = new User();
 			user.setId(acceptUser);

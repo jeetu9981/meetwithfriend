@@ -1,6 +1,7 @@
 package com.meetnewfriend.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -205,7 +206,7 @@ public class UserController {
 		String name=req.getParameter("serachvalue");
 		//get user by name
 		List<SerachUserDto> users=this.userServiceImpl.search(name,(int)req.getSession().getAttribute("userId"));
-		System.out.println(users.isEmpty());
+
 		if(!users.isEmpty())
 			md.addObject("users",users);
 		else

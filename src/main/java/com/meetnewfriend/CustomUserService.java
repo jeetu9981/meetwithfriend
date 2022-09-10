@@ -7,7 +7,6 @@
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //
-//import com.meetnewfriend.controller.UserController;
 //import com.meetnewfriend.entity.User;
 //
 //public class CustomUserService implements UserDetails{
