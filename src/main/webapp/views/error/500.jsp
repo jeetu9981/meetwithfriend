@@ -1,4 +1,4 @@
-<%-- <%
+<%
 	if(session.getAttribute("userId")!=null)
 	{	
 %>
@@ -15,4 +15,4 @@
 		</script>
 <%
 	}
-%> --%>
+%>

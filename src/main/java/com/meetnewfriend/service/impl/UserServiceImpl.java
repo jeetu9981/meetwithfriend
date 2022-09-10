@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,9 @@ public class UserServiceImpl implements UserService {
 		String email=user.getEmail().trim();
 		String password=user.getPassword().trim();
 		
-		if(email.length()==0 || password.length()==0)
+		System.out.println(Pattern.matches("/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/", email));
+		
+		if(email.length()==0 || password.length()==0 ||!Pattern.matches("/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/", email))
 			return "invaliddata";
 		
 		if (user.getName().length() < 5) {
@@ -79,7 +82,10 @@ public class UserServiceImpl implements UserService {
 
 	// user signin
 	public User signin(User user) {
-		return this.userRepo.findByEmailAndPassword(user.getEmail(), user.getPassword());
+		String email=user.getEmail().trim();
+		String password=user.getPassword();
+
+		return this.userRepo.findByEmailAndPassword(email, password);
 	}
 
 	// update when user Login Fisrt

@@ -1,7 +1,6 @@
 package com.meetnewfriend.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -77,7 +76,7 @@ public class UserController {
 			md.setUrl("/user/");
 		}else if(status.equals("invaliddata")) {
 			md.setUrl("/user/");
-			session.setAttribute("failMsg", "Please Enter Valid Data......");
+			session.setAttribute("failMsg", "Please Enter Valid Email Or Password......");
 		}else {
 			md.setUrl("/user/");
 			session.setAttribute("failMsg", "Something went wrong......");
@@ -115,7 +114,7 @@ public class UserController {
 			rd.setUrl("profile");
 		}else {
 			session.setAttribute("failMsg","Invalid Password Or Email....");
-			rd.setUrl("/");
+			rd.setUrl("/user/signinjsp");
 		}
 		return rd;
 	}
