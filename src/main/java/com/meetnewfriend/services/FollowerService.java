@@ -12,16 +12,16 @@ public interface FollowerService {
 	public List<Follower> getRequest(int id);
 	
 	//delete follow request of other user
-	public int deleteRequest(int acceptUser,int userId);
+	public int deleteRequest(int acceptUser,int userId) throws Exception;
 	
 	//accept request
-	public int accept(int acceptUser,int userId);
+	public int accept(int acceptUser,int userId) throws Exception;
 	
 	//check request already sent or not in follow request
 	public Follower checkExixtOrNot(int userId,int acceptUser);
 		
 	//follow back
-	public boolean saveFollower(int acceptUser,int userId);
+	public boolean saveFollower(int acceptUser,int userId) throws Exception;
 	
 	public Follower getFollowerRequest(int userId,int acceptUser);
 }

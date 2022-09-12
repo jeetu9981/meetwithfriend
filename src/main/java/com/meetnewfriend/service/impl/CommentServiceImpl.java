@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService{
 		return false;
 	}
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	//delete post comments
 	public void deletePost(int postId) {
 		Post post=new Post();

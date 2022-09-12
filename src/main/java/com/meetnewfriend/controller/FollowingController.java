@@ -1,5 +1,7 @@
 package com.meetnewfriend.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.meetnewfriend.entity.User;
 import com.meetnewfriend.service.impl.FollowingServiceImpl;
 
 @RestController
@@ -23,7 +26,7 @@ public class FollowingController {
 	
 	//unfollow user
 ;	@GetMapping("/unfollow")
-	public RedirectView unfollow(@RequestParam("following") int following,HttpServletRequest req) {
+	public RedirectView unfollow(@RequestParam("following") int following,HttpServletRequest req) throws Exception {
 		RedirectView rd=new RedirectView();
 		HttpSession session =req.getSession();
 		
@@ -35,5 +38,11 @@ public class FollowingController {
 		
 		rd.setUrl("/user/profile");
 		return rd;
+	}
+
+
+	@GetMapping("/mutualfriends")
+	public List<User> mutual(@RequestParam("userId") int userId,HttpServletRequest req){
+		return this.followingServiceImpl.getMutualFriends(userId,(int)req.getSession().getAttribute("userId"));
 	}
 }

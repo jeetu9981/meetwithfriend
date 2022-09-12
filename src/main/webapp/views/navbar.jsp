@@ -39,7 +39,8 @@
 						href="/user/dashboard">UserName : <%=session.getAttribute("userName")%></a></li>
 					<li class="nav-item"><a class="nav-link" href="/user/profile">Profile</a></li>
 					<li class="nav-item"><a class="nav-link" href="../follower/checkrequest">Friend Request</a></li>
-					<li class="nav-item"><a class="nav-link" href="../block/getAllBlocks">Block User</a></li>	
+					<li class="nav-item"><a class="nav-link" href="../block/getAllBlocks">Block User</a></li>
+					<li class="nav-item"><a class="nav-link" href="/message/getmessages">All messages</a></li>	
 
 					<li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
 

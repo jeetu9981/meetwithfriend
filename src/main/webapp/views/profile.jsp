@@ -119,7 +119,8 @@
 </div>
 
 <div class="container mt-5 my-5">
-	<h1 class="text-center">Upload Posts</h1>
+	<div class="row">
+		<h1 class="text-center">Upload Posts</h1>
 	<%
 		if (posts.size() > 0) 
 		{
@@ -173,6 +174,7 @@
 	<%
 		}
 	%>
+	</div>
 </div>
 
 <%@include file="viewfollowing.jsp"%>

@@ -51,7 +51,7 @@ public class LikeServiceImpl implements LikeService{
 	
 	
 	//delete like which like before
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public int delete(int userId,int postId,int realUser,int likeUser){
 		Post post=new Post();
 		post.setId(postId);

@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.meetnewfriend.entity.Following;
-import com.meetnewfriend.entity.RealFollower;
 import com.meetnewfriend.entity.User;
 
 @Repository

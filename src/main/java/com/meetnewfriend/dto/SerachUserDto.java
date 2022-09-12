@@ -7,7 +7,7 @@ public class SerachUserDto {
 	private boolean followStatus;
 	private boolean followBackStatus;
 	private boolean declineRequest;
-	
+	private int mutualFriends;
 	
 	public boolean isDeclineRequest() {
 		return declineRequest;
@@ -40,6 +40,12 @@ public class SerachUserDto {
 	}
 	public void setFollowBackStatus(boolean followBackStatus) {
 		this.followBackStatus = followBackStatus;
+	}
+	public int getMutualFriends() {
+		return mutualFriends;
+	}
+	public void setMutualFriends(int mutualFriends) {
+		this.mutualFriends = mutualFriends;
 	}
 	
 	

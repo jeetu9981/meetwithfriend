@@ -17,7 +17,7 @@ public class RealFollowerServiceImpl implements RealFollowerService{
 	
 	
 	//increase follower of one user
-	public RealFollower addFollower(RealFollower entity) {
+	public RealFollower addFollower(RealFollower entity) throws Exception{
 		return this.realFollowerRepo.save(entity);
 	}
 	

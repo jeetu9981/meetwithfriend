@@ -23,7 +23,7 @@ public class BlockController {
 	private BlockServiceImpl blockServiceImpl;
 	
 	@GetMapping("/blockuser")
-	public RedirectView blockUser(@RequestParam("blockuser") int blockUser,HttpServletRequest req) {
+	public RedirectView blockUser(@RequestParam("blockuser") int blockUser,HttpServletRequest req) throws Exception {
 		HttpSession session=req.getSession();
 		RedirectView rd=new RedirectView();
 		

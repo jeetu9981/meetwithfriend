@@ -51,14 +51,23 @@
 						var comments=result.comments;
 						for(var i=0;i<comments.length;i++)
 						{
-							console.log("/images/"+comments[i].user.image);
-							s=s+'<div class="row">'
-							+'<div class="col-md-4">'
-							+'<img src="../../images/'+comments[i].user.image+'" height="50" width="50" style="border-radius: 800px">'
-							+'</div>'
-							+'<div class="col-md-4">'+comments[i].user.name+'</div>'
-							+'<div class="col-md-4">'+comments[i].comment+'</div>'
-							+'</div>'
+							if(comments[i].user.image!=null){
+								s=s+'<div class="row">'
+								+'<div class="col-md-4">'
+								+'<img src="../../images/'+comments[i].user.image+'" height="50" width="50" style="border-radius: 800px">'
+								+'</div>'
+								+'<div class="col-md-4">'+comments[i].user.name+'</div>'
+								+'<div class="col-md-4">'+comments[i].comment+'</div>'
+								+'</div>'
+							}else{
+								s=s+'<div class="row">'
+								+'<div class="col-md-4">'
+								+'<img src="../../images/profile.png" height="50" width="50" style="border-radius: 800px">'
+								+'</div>'
+								+'<div class="col-md-4">'+comments[i].user.name+'</div>'
+								+'<div class="col-md-4">'+comments[i].comment+'</div>'
+								+'</div>'
+							}
 						}
 						$("#modalBody").html(s);
 					} 
@@ -74,13 +83,21 @@
 						var comments=result.likes;
 						for(var i=0;i<comments.length;i++)
 						{
-							console.log(comments[i])
-							s=s+'<div class="row">'
-							+'<div class="col-md-4">'
-							+'<img src="../../images/'+comments[i].user.image+'" height="50" width="50" style="border-radius: 800px">'
-							+'</div>'
-							+'<div class="col-md-4">'+comments[i].user.name+'</div>'
-							+'</div>'
+							if(comments[i].user.image!=null){
+								s=s+'<div class="row">'
+								+'<div class="col-md-4">'
+								+'<img src="../../images/'+comments[i].user.image+'" height="50" width="50" style="border-radius: 800px">'
+								+'</div>'
+								+'<div class="col-md-4">'+comments[i].user.name+'</div>'
+								+'</div>'
+							}else{
+								s=s+'<div class="row">'
+								+'<div class="col-md-4">'
+								+'<img src="../../images/profile.png" height="50" width="50" style="border-radius: 800px">'
+								+'</div>'
+								+'<div class="col-md-4">'+comments[i].user.name+'</div>'
+								+'</div>'
+							}
 						}
 						$("#likeModalBody").html(s);
 					} 
