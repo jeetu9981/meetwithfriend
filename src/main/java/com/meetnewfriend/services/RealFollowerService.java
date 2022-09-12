@@ -6,7 +6,7 @@ import com.meetnewfriend.entity.RealFollower;
 
 public interface RealFollowerService {
 	//increase follower of one user
-	public RealFollower addFollower(RealFollower entity);
+	public RealFollower addFollower(RealFollower entity) throws Exception;
 	
 	// this method use for count followers
 	public int countFollower(int id);

@@ -56,58 +56,68 @@ public class FollowerServiceImpl implements FollowerService{
 	}
 	
 	//delete follow request of other user
-	@Transactional
-	public int deleteRequest(int acceptUser,int userId){
-		Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
-
-		if(follower!=null) {
-			if(follower.getFollowBack()) {
-				User user = new User();
-				user.setId(acceptUser);
-				
-				follower.setAccept(true);
-				follower.setFollowBack(false);
-				follower.setSendUserRequest(user);
-				follower.setAcceptUser(userId);
-				if(this.followerRepo.save(follower)!=null)
-					return 1;
-			}else {
-				return this.followerRepo.deleteByUserIdAndFollowerId(acceptUser,userId);
+	@Transactional(rollbackFor = Exception.class)
+	public int deleteRequest(int acceptUser,int userId) throws Exception{
+		try {
+			Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
+			if(follower!=null) {
+				if(follower.getFollowBack()) {
+					User user = new User();
+					user.setId(acceptUser);
+					
+					follower.setAccept(true);
+					follower.setFollowBack(false);
+					follower.setSendUserRequest(user);
+					follower.setAcceptUser(userId);
+					if(this.followerRepo.save(follower)!=null)
+						return 1;
+				}else {
+					return this.followerRepo.deleteByUserIdAndFollowerId(acceptUser,userId);
+				}
 			}
+			else {
+				return this.followerRepo.deleteByUserIdAndFollowerId(userId,acceptUser);
+			}
+		}catch(Exception e) {
+			throw new Exception("Exception occur");
 		}
-		else {
-			return this.followerRepo.deleteByUserIdAndFollowerId(userId,acceptUser);
-		}
-
+		
 		return 0;
 	}
 	
 	//accept request
-	@Transactional
-	public int accept(int acceptUser,int userId){
+	@Transactional(rollbackFor = Exception.class)
+	public int accept(int acceptUser,int userId) throws Exception{
 		boolean a=true;
-		int i=this.followerRepo.updateAcceptRequest(a,acceptUser,userId);
-		if(i>0) {
-			Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
-			if(follower.getAccept() && follower.getFollowBack()) {
-				this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId);
+		try 
+		{
+			int i=this.followerRepo.updateAcceptRequest(a,acceptUser,userId);
+			if(i>0) 
+			{
+				Follower follower=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
+				if(follower.getAccept() && follower.getFollowBack()) {
+					this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId);
+				}
+				RealFollower realFollower = new RealFollower();
+				User user = new User();
+				user.setId(userId);
+				realFollower.setFollower(user);
+				realFollower.setUser_id(acceptUser);
+	
+				Following following = new Following();
+				User user1 = new User();
+				user1.setId(acceptUser);
+				
+				following.setFollowing(user1);
+				following.setUser_id(userId);
+				
+				//here we add following of one user and add increase follower of one user
+				if (this.followingServiceImpl.addfollowing(following) != null && this.realFollowerServiceImpl.addFollower(realFollower) != null) 
+					return 1;	
 			}
-			RealFollower realFollower = new RealFollower();
-			User user = new User();
-			user.setId(userId);
-			realFollower.setFollower(user);
-			realFollower.setUser_id(acceptUser);
-
-			Following following = new Following();
-			User user1 = new User();
-			user1.setId(acceptUser);
-			
-			following.setFollowing(user1);
-			following.setUser_id(userId);
-			
-			//here we add following of one user and add increase follower of one user
-			if (this.followingServiceImpl.addfollowing(following) != null && this.realFollowerServiceImpl.addFollower(realFollower) != null) 
-				return 1;
+		}
+		catch(Exception e) {
+			throw new Exception("Exception occur......");
 		}
 		return 0;
 	}
@@ -120,20 +130,24 @@ public class FollowerServiceImpl implements FollowerService{
 	}
 	
 	//followback
-	@Transactional
-	public boolean saveFollower(int acceptUser,int userId) {
-		if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
-		{
-			Follower follower =new Follower();
-			User user = new User();
-			user.setId(acceptUser);
-			
-			follower.setAccept(false);
-			follower.setFollowBack(true);
-			follower.setSendUserRequest(user);
-			follower.setAcceptUser(userId);
-			if(this.followerRepo.save(follower)!=null)
-				return true;
+	@Transactional(rollbackFor = Exception.class)
+	public boolean saveFollower(int acceptUser,int userId) throws Exception {
+		try {
+			if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
+			{
+				Follower follower =new Follower();
+				User user = new User();
+				user.setId(acceptUser);
+				
+				follower.setAccept(false);
+				follower.setFollowBack(true);
+				follower.setSendUserRequest(user);
+				follower.setAcceptUser(userId);
+				if(this.followerRepo.save(follower)!=null)
+					return true;
+			}
+		}catch(Exception e) {
+			throw new Exception("Exception occur");
 		}
 		return false;
 	}

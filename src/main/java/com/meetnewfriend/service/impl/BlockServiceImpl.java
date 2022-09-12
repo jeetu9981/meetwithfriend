@@ -24,31 +24,36 @@ public class BlockServiceImpl implements BlockService{
 	private FollowingServiceImpl followingServiceImpl;
 
 	@Override
-	public boolean blockUser(int blockUser, int realUser) {
-		User block=new User();
-		block.setId(blockUser);
-		
-		User real=new User();
-		real.setId(realUser);
-		
-		Block bl=new Block();
-		bl.setBlockUser(block);
-		bl.setRealUser(real);
-		
-		if(this.blockRepo.save(bl)!=null) {
-			//here we decrease followers from both user
-			if(this.followerServiceImpl.deleteRealFollower(realUser,blockUser)>0) {
-				if(this.followerServiceImpl.deleteRealFollower(blockUser,realUser)>0) {
-					//here we decrese both side following
-					if(this.followingServiceImpl.deleteFollowing(blockUser,realUser)>0) {
-						if(this.followingServiceImpl.deleteFollowing(realUser,blockUser)>0)
-						{
-							return true;
+	@Transactional(rollbackFor = Exception.class)
+	public boolean blockUser(int blockUser, int realUser) throws Exception {
+		try {
+			User block=new User();
+			block.setId(blockUser);
+			
+			User real=new User();
+			real.setId(realUser);
+			
+			Block bl=new Block();
+			bl.setBlockUser(block);
+			bl.setRealUser(real);
+			
+			if(this.blockRepo.save(bl)!=null) {
+				//here we decrease followers from both user
+				if(this.followerServiceImpl.deleteRealFollower(realUser,blockUser)>0) {
+					if(this.followerServiceImpl.deleteRealFollower(blockUser,realUser)>0) {
+						//here we decrese both side following
+						if(this.followingServiceImpl.deleteFollowing(blockUser,realUser)>0) {
+							if(this.followingServiceImpl.deleteFollowing(realUser,blockUser)>0)
+							{
+								return true;
+							}
+							
 						}
-						
 					}
 				}
 			}
+		}catch(Exception e) {
+			throw new Exception("Exception occur");
 		}
 		return false;
 	}

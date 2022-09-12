@@ -43,24 +43,24 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PostServiceImpl postServiceImpl;
-	
+
 	@Autowired
 	private FollowerServiceImpl followerServiceImpl;
-	
+
 	@Autowired
 	private BlockRepo blockRepo;
 
 	// Add user
 	public String addUser(User user) {
 		String userName = user.getName().trim();
-		String email=user.getEmail().trim();
-		String password=user.getPassword().trim();
-		
+		String email = user.getEmail().trim();
+		String password = user.getPassword().trim();
+
 		System.out.println(Pattern.matches("/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/", email));
-		
-		if(email.length()==0 || password.length()==0 ||!Pattern.matches("/^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$/", email))
+
+		if (email.length() == 0 || password.length() == 0)
 			return "invaliddata";
-		
+
 		if (user.getName().length() < 5) {
 			user.setName("User " + userName);
 		}
@@ -68,12 +68,11 @@ public class UserServiceImpl implements UserService {
 		userName = userName.substring(0, 1).toUpperCase() + userName.substring(1);
 		user.setUserName(userName);
 		user.setLoginFirst(false);
-		
 
 		if (user.getCaptcha().equals(UserController.hidden)) {
-			if (this.userRepo.save(user)!= null) {
+			if (this.userRepo.save(user) != null) {
 				return "success";
-			} 
+			}
 		} else {
 			return "captchafail";
 		}
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService {
 
 	// user signin
 	public User signin(User user) {
-		String email=user.getEmail().trim();
-		String password=user.getPassword();
+		String email = user.getEmail().trim();
+		String password = user.getPassword();
 
 		return this.userRepo.findByEmailAndPassword(email, password);
 	}
@@ -99,10 +98,7 @@ public class UserServiceImpl implements UserService {
 	// this method is use for save first time detail of user when he/she login first
 	// time in application
 	public String updateUserDetail(int id, User user, MultipartFile image) {
-		
-//		if(user.getName().contentEquals("") || user.getEmail().contentEquals(""))
-//			return "nameinvalid";
-		
+
 		if (!image.isEmpty()) {
 			// this peace of code use for upload image
 			String fileName = image.getOriginalFilename().trim();
@@ -124,8 +120,8 @@ public class UserServiceImpl implements UserService {
 			User user1 = this.getUser(id);
 			user1.setImage(user.getImage());
 		}
-		if (this.userRepo.updateUserDeatil(user.getFavouritBooks(), user.getFavouritePlaces(),
-				user.getFavouriteSongs(), user.getImage(), id) > 0)
+		if (this.userRepo.updateUserDeatil(user.getFavouritBooks(), user.getFavouritePlaces(), user.getFavouriteSongs(),
+				user.getImage(), id) > 0)
 			return "success";
 		return "fail";
 	}
@@ -136,77 +132,87 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// get user by name
-	public List<SerachUserDto> search(String name,int userId) {
-		ArrayList<User> users=(ArrayList<User>) this.userRepo.findByName(name);
-		ArrayList<Block> blocks=(ArrayList<Block>) this.blockRepo.findAll();
-		
-		ArrayList<User> newUsers=new ArrayList<User>();
-		
-		//here we select only unblock users
+	public List<SerachUserDto> search(String name, int userId) {
+		ArrayList<User> users = (ArrayList<User>) this.userRepo.findByName(name);
+		ArrayList<Block> blocks = (ArrayList<Block>) this.blockRepo.findAll();
+
+		ArrayList<User> newUsers = new ArrayList<User>();
+
+		// here we select only unblock users
 		boolean status;
-		for(int i=0;i<users.size();i++) {
-			status=true;
-			for(int j=0;j<blocks.size();j++) {
-				if(blocks.get(j).getBlockUser().getId()==userId && blocks.get(j).getRealUser().getId()==users.get(i).getId()
-				|| blocks.get(j).getBlockUser().getId()==users.get(i).getId() && blocks.get(j).getRealUser().getId()==userId)
-				{
-					status=false;
+		for (int i = 0; i < users.size(); i++) {
+			status = true;
+			for (int j = 0; j < blocks.size(); j++) {
+				if (blocks.get(j).getBlockUser().getId() == userId
+						&& blocks.get(j).getRealUser().getId() == users.get(i).getId()
+						|| blocks.get(j).getBlockUser().getId() == users.get(i).getId()
+								&& blocks.get(j).getRealUser().getId() == userId) {
+					status = false;
 					break;
 				}
 			}
-			if(status)
+			if(users.get(i).getId()==userId)
+				continue;
+			if (status)
 				newUsers.add(users.get(i));
 		}
-		
-		//after selecting ublock user we can elect follow or unfollow user
-		ArrayList<SerachUserDto> searchUsers=new ArrayList<SerachUserDto>();
-		
-		List<Following> following=this.followingServiceImpl.getFollowing(userId);
-		
+
+		// after selecting ublock user we can elect follow or unfollow user
+		ArrayList<SerachUserDto> searchUsers = new ArrayList<SerachUserDto>();
+
+		List<Following> following = this.followingServiceImpl.getFollowing(userId);
+
 		SerachUserDto userDto;
-		for(int i=0;i<newUsers.size();i++) {
-			status=true;
-			userDto=new SerachUserDto();
-			//check can we follow before or not if follow then set followstatus true
-			for(int j=0;j<following.size();j++) 
-			{
-				if(following.get(j).getFollowing().getId()==newUsers.get(i).getId())
-				{
-					status=false;
+		for (int i = 0; i < newUsers.size(); i++) {
+			status = true;
+			userDto = new SerachUserDto();
+			// check can we follow before or not if follow then set followstatus true
+			for (int j = 0; j < following.size(); j++) {
+				if (following.get(j).getFollowing().getId() == newUsers.get(i).getId()) {
+					status = false;
 					break;
 				}
 			}
-			if(status)
-			{
-				Follower follower=this.followerServiceImpl.getFollowerRequest(userId,newUsers.get(i).getId());
-				if(follower!=null) {
-					if(follower.getAccept()) {
+			if (status) {
+				Follower follower = this.followerServiceImpl.getFollowerRequest(userId, newUsers.get(i).getId());
+				if (follower != null) {
+					if (follower.getAccept()) {
 						userDto.setFollowBackStatus(true);
 						userDto.setUser(newUsers.get(i));
-					}
-					else if(!follower.getFollowBack() && !follower.getAccept() && userId!=follower.getAcceptUser())
-					{
+					} else if (!follower.getFollowBack() && !follower.getAccept()
+							&& userId != follower.getAcceptUser()) {
 						userDto.setDeclineRequest(true);
 						userDto.setUser(newUsers.get(i));
 					}
-				}
-				else {
-					follower=this.followerServiceImpl.getFollowerRequest(newUsers.get(i).getId(),userId);
-					if(follower!=null) {
+				} else {
+					follower = this.followerServiceImpl.getFollowerRequest(newUsers.get(i).getId(), userId);
+					if (follower != null) {
 						userDto.setFollowBackStatus(true);
 						userDto.setUser(newUsers.get(i));
-					}else {
+					} else {
 						userDto.setFollowStatus(false);
 						userDto.setUser(newUsers.get(i));
 					}
 				}
-			}
-			else
-			{
+			} else {
 				userDto.setFollowStatus(true);
 				userDto.setUser(newUsers.get(i));
 			}
 			searchUsers.add(userDto);
+		}
+
+		for (int i = 0; i < searchUsers.size(); i++) {
+			int count = 0;
+			List<Following> userFollowing = this.followingServiceImpl
+					.getFollowing(searchUsers.get(i).getUser().getId());
+			for (int j = 0; j < userFollowing.size(); j++) {
+				for (int k = 0; k < following.size(); k++) {
+					if (userFollowing.get(i).getFollowing().getId() == following.get(j).getFollowing().getId()) {
+						count++;
+					}
+				}
+			}
+			searchUsers.get(0).setMutualFriends(count);
 		}
 		return searchUsers;
 	}
@@ -251,7 +257,7 @@ public class UserServiceImpl implements UserService {
 		DashboardDto dashboard = new DashboardDto();
 		// here we will get all followers
 //		List<RealFollower> followers = this.realFollowerServiceImpl.getFollower(userId);
-		List<Following> followers=this.followingServiceImpl.getFollowing(userId);
+		List<Following> followers = this.followingServiceImpl.getFollowing(userId);
 		ArrayList<Integer> allUsersId = new ArrayList<Integer>();
 
 		// get all followers id with the help of them id we can find them all posts

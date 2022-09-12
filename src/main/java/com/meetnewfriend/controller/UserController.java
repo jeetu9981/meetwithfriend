@@ -64,7 +64,7 @@ public class UserController {
 	public RedirectView signup(@ModelAttribute User user,HttpServletRequest req) throws IOException{
 		HttpSession session=req.getSession();
 		RedirectView md = new RedirectView();
-		
+		System.out.println(user);
 		String status = this.userServiceImpl.addUser(user);
 		
 		if(status.equals("success")) {

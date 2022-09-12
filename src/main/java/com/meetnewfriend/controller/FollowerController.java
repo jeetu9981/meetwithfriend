@@ -61,7 +61,7 @@ public class FollowerController {
 
 	//when user accept follow request if other user
 	@GetMapping("/acceptrequest")
-	public RedirectView acceptRequest(@RequestParam("userId") int userId, HttpServletRequest req) {
+	public RedirectView acceptRequest(@RequestParam("userId") int userId, HttpServletRequest req) throws Exception {
 		RedirectView rd = new RedirectView();
 		HttpSession session = req.getSession();
 		
@@ -79,7 +79,7 @@ public class FollowerController {
 
 	//give followback to the user
 	@GetMapping("/followback")
-	public RedirectView followBack(@RequestParam("userId") int userId, HttpServletRequest req) {
+	public RedirectView followBack(@RequestParam("userId") int userId, HttpServletRequest req) throws Exception {
 		RedirectView rd = new RedirectView();
 		HttpSession session = req.getSession();
 		
@@ -92,7 +92,7 @@ public class FollowerController {
 	
 	//when user decline follow request
 	@GetMapping("/declinerequest")
-	public RedirectView declineRequest(@RequestParam("userId") int requestUser,HttpServletRequest req) {
+	public RedirectView declineRequest(@RequestParam("userId") int requestUser,HttpServletRequest req) throws Exception {
 		RedirectView rd=new RedirectView();
 		HttpSession session=req.getSession();
 		

@@ -88,6 +88,7 @@ public class PostServiceImpl implements PostService{
 		this.postRepo.deletePost(post,user);
 	}
 	
+	@Transactional(rollbackFor = Exception.class)
 	public void delete(int postId,int userId) {
 		this.commentServiceImpl.deletePost(postId);
 		this.likeServiceImpl.deletePost(postId);

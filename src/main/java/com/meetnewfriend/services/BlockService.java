@@ -8,7 +8,7 @@ import com.meetnewfriend.entity.Block;
 
 @Service
 public interface BlockService {
-	public boolean blockUser(int blockUser,int realUser);
+	public boolean blockUser(int blockUser,int realUser) throws Exception;
 	
 	public List<Block> getBlockUsers(int userId);
 	
