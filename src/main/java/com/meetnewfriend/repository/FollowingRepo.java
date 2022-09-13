@@ -28,6 +28,6 @@ public interface FollowingRepo extends CrudRepository<Following,Integer>{
 	public int deleteByBlockUser(@Param("blockUser")int blockUser,@Param("real")int realUser);
 	
 	
-	@Query("select rf from Following rf where rf.user_id=:userId")
+	@Query("select rf from Following rf where rf.user_id=:userId ")
 	public List<Following> findAllById(@Param("userId") int userId);
 }

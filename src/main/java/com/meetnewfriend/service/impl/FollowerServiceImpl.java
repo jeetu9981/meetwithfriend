@@ -133,19 +133,23 @@ public class FollowerServiceImpl implements FollowerService{
 	@Transactional(rollbackFor = Exception.class)
 	public boolean saveFollower(int acceptUser,int userId) throws Exception {
 		try {
-			if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
-			{
-				Follower follower =new Follower();
-				User user = new User();
-				user.setId(acceptUser);
+				Follower f=this.followerRepo.findByUserIdAndAcceptAndSendUser(userId, acceptUser);
+				if(!f.getAccept() && !f.getFollowBack())
+					return false;
 				
-				follower.setAccept(false);
-				follower.setFollowBack(true);
-				follower.setSendUserRequest(user);
-				follower.setAcceptUser(userId);
-				if(this.followerRepo.save(follower)!=null)
-					return true;
-			}
+				if(this.followerRepo.deleteByUserIdAndFollowerId(acceptUser, userId)>0)
+				{
+					Follower follower =new Follower();
+					User user = new User();
+					user.setId(acceptUser);
+					
+					follower.setAccept(false);
+					follower.setFollowBack(true);
+					follower.setSendUserRequest(user);
+					follower.setAcceptUser(userId);
+					if(this.followerRepo.save(follower)!=null)
+						return true;
+				}
 		}catch(Exception e) {
 			throw new Exception("Exception occur");
 		}

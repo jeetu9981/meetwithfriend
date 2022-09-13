@@ -11,22 +11,53 @@
 <%@include file="succorerror.jsp"%>
 
 <head>
-	<style>
-		.box{
-			  /* width: 300px; */
-			  border: 2px solid black;
-			 	padding: 10px;
-			   margin: 20px; 
-		}
-	</style>
+<style>
+.box {
+	/* width: 300px; */
+	border: 2px solid black;
+	padding: 10px;
+	margin: 20px;
+}
+</style>
 </head>
 
 
 <%
-	DashboardDto dashboard=(DashboardDto)request.getAttribute("posts");
-	ArrayList<Post> posts = (ArrayList<Post>)dashboard.getPosts();
+	DashboardDto dashboard = (DashboardDto) request.getAttribute("posts");
+	ArrayList<Post> posts = (ArrayList<Post>) dashboard.getPosts();
+	ArrayList<Story> myFollowingStory=(ArrayList<Story>)dashboard.getMyFollowingStory();
 	if (posts.size() > 0) {
 %>
+
+<div class="container mt-5">
+	<div class="row">
+		<div class="col-md-2">
+		<a data-bs-toggle="modal"
+			data-bs-target="#addstory" href=""><img
+			src="../../images/profile.png" height="50" width="50"
+			style="border-radius: 800px"></a>
+		<p class="mx-3">My</p>
+		</div>
+		<%
+			for(int i=0;i<myFollowingStory.size();i++){
+		%>
+			<div class="col-md-1">	
+				<a data-bs-toggle="modal"
+					data-bs-target="#seestory" href="" onClick="findStory(<%=myFollowingStory.get(i).getId() %>,<%=myFollowingStory.get(i).getId()%>)">
+					<input id="getImage<%=myFollowingStory.get(i).getId() %>" type="hidden" value="<%=myFollowingStory.get(i).getStory()%>">
+					<%if(myFollowingStory.get(i).getUser().getImage()!=null){ %><img
+					src="../../images/<%=myFollowingStory.get(i).getUser().getImage()%>" height="50" width="50"
+					style="border-radius: 800px;border-color:red">
+					<%}else{ %><img
+					src="../../images/profile.png" height="50" width="50"
+					style="border-radius: 800px;border-style:solid;border-color:red"><%} %></a>
+				<p class="mx-3"><%=myFollowingStory.get(i).getUser().getName() %></p>
+			</div>
+		<%
+			}
+		%>
+	</div>
+</div>
 
 <div class="container mt-5 frontpage">
 	<div class="row">
@@ -40,21 +71,24 @@
 				<div class="col-md-3">
 					<a href="/user/userprofile?userId=<%=post.getUser().getId()%>">
 						<%
-							if(post.getUser().getImage()!=null){
-						%><img alt="" src="../../images/<%=post.getUser().getImage()%>" height="50" width="50" style="border-radius: 800px"><%
-							}else{
+							if (post.getUser().getImage() != null) {
+						%><img alt="" src="../../images/<%=post.getUser().getImage()%>"
+						height="50" width="50" style="border-radius: 800px">
+						<%
+							} else {
+						%> <img alt="" src="../../images/profile.png" height="50"
+						width="50" style="border-radius: 800px">
+						<%
+							}
 						%>
-				<img alt="" src="../../images/profile.png" height="50" width="50" style="border-radius: 800px"><%
-					}
-				%>
 					</a>
 				</div>
 				<div class="col-md-6 mt-3">
 					<h6><%=post.getUser().getUserName()%></h6>
 				</div>
 				<div class="col-md-3"></div>
-		</div>
-		<b><hr></b>
+			</div>
+			<b><hr></b>
 			<div class="row">
 				<img alt="" src="../../images/<%=post.getImage()%>" height="400">
 			</div>
@@ -64,16 +98,17 @@
 						<div class="col-md-4">
 							<%
 								List<Like> likes = post.getLikes();
-													boolean status = true;
-													if (likes.size() > 0) {
-													for (Like l : likes) {
+										boolean status = true;
+										if (likes.size() > 0) {
+											for (Like l : likes) {
 							%>
 							<%
 								if (l.getUser().getId() == (int) session.getAttribute("userId") && l.isStatus() == true) {
 							%>
 							<button type="submit"
-								onClick="disLike(<%=l.getUser().getId()%>,<%=post.getId()%>,<%=l.getRealuser()%>)"
-								> <i class="fa fa-heart" id="dislike<%=post.getId()%>"></i></button>
+								onClick="disLike(<%=l.getUser().getId()%>,<%=post.getId()%>,<%=l.getRealuser()%>)">
+								<i class="fa fa-heart" id="dislike<%=post.getId()%>"></i>
+							</button>
 							<%
 								status = false;
 												}
@@ -81,9 +116,10 @@
 										}
 										if (status) {
 							%>
-							<button href="" onClick="addLike(<%=post.getUser().getId()%>,<%=post.getId()%>)"
-								><i
-								class="fa fa-heart-o" id="addlike<%=post.getId()%>"></i></button>
+							<button href=""
+								onClick="addLike(<%=post.getUser().getId()%>,<%=post.getId()%>)">
+								<i class="fa fa-heart-o" id="addlike<%=post.getId()%>"></i>
+							</button>
 							<%
 								}
 							%>
@@ -100,16 +136,17 @@
 			</div>
 			<div class="row">
 				<div class="col-md-4">
-					<a class="btn btn-dark mt-1" data-bs-toggle="modal" onClick="getLikes(<%=post.getId()%>)"
+					<a class="btn btn-dark mt-1" data-bs-toggle="modal"
+						onClick="getLikes(<%=post.getId()%>)"
 						data-bs-target="#viewalllikes" href="" style="cursor: pointer">Liked
 						:<span id="likecount<%=post.getId()%>"><%=post.getLikes().size()%></span>
 					</a>
 				</div>
 				<div class="col-md-8">
-					<a class="btn btn-dark mt-1" href="" onClick="getComments(<%=post.getId()%>)"
-						data-bs-toggle="modal" data-bs-target="#viewcomments"
-						style="cursor: pointer">View all <%=post.getComments().size()%>
-						comments
+					<a class="btn btn-dark mt-1" href=""
+						onClick="getComments(<%=post.getId()%>)" data-bs-toggle="modal"
+						data-bs-target="#viewcomments" style="cursor: pointer">View
+						all <%=post.getComments().size()%> comments
 					</a> <input hidden="true" id="vale" value="0">
 				</div>
 			</div>
@@ -140,6 +177,8 @@
 <%@include file="addcomments.jsp"%>
 <%@include file="viewcomments.jsp"%>
 <%@include file="viewlikes.jsp"%>
+<%@include file="addstory.jsp"%>
+<%@include file="seestory.jsp"%>
 
 <script src="../../javascript/dashboard.js"></script>
 

@@ -84,7 +84,7 @@ public class FollowerController {
 		HttpSession session = req.getSession();
 		
 		if(!this.followerServiceImpl.saveFollower((int) session.getAttribute("userId"),userId))
-			session.setAttribute("failMsg","followback...");
+			session.setAttribute("failMsg","Please First Accept Request...");
 		rd.setUrl("checkrequest");
 		return rd;
 	}

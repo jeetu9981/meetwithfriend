@@ -21,6 +21,7 @@ import com.meetnewfriend.entity.Follower;
 import com.meetnewfriend.entity.Following;
 import com.meetnewfriend.entity.Post;
 import com.meetnewfriend.entity.RealFollower;
+import com.meetnewfriend.entity.Story;
 import com.meetnewfriend.entity.User;
 import com.meetnewfriend.repository.BlockRepo;
 import com.meetnewfriend.repository.UserRepo;
@@ -49,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private BlockRepo blockRepo;
+	
+	@Autowired
+	private StoryServiceImpl storyServiceImpl;
 
 	// Add user
 	public String addUser(User user) {
@@ -203,16 +207,16 @@ public class UserServiceImpl implements UserService {
 
 		for (int i = 0; i < searchUsers.size(); i++) {
 			int count = 0;
-			List<Following> userFollowing = this.followingServiceImpl
-					.getFollowing(searchUsers.get(i).getUser().getId());
+			List<Following> userFollowing = this.followingServiceImpl.getFollowing(searchUsers.get(i).getUser().getId());
 			for (int j = 0; j < userFollowing.size(); j++) {
 				for (int k = 0; k < following.size(); k++) {
-					if (userFollowing.get(i).getFollowing().getId() == following.get(j).getFollowing().getId()) {
+					if (userFollowing.get(j).getFollowing().getId() == following.get(k).getFollowing().getId()) {
 						count++;
 					}
 				}
 			}
-			searchUsers.get(0).setMutualFriends(count);
+			if(count>0)
+					searchUsers.get(i).setMutualFriends(count);
 		}
 		return searchUsers;
 	}
@@ -257,18 +261,35 @@ public class UserServiceImpl implements UserService {
 		DashboardDto dashboard = new DashboardDto();
 		// here we will get all followers
 //		List<RealFollower> followers = this.realFollowerServiceImpl.getFollower(userId);
-		List<Following> followers = this.followingServiceImpl.getFollowing(userId);
+		List<Following> following = this.followingServiceImpl.getFollowing(userId);
 		ArrayList<Integer> allUsersId = new ArrayList<Integer>();
 
 		// get all followers id with the help of them id we can find them all posts
-		for (Following p : followers) {
+		for (Following p : following) {
 			allUsersId.add(p.getFollowing().getId());
 		}
 
 		// here we will get our follower all posts
 		List<Post> posts = this.postServiceImpl.getAllPost(allUsersId);
+		
+		List<Story> myStory=this.storyServiceImpl.getMystory(userId);
+		List<Story> myFollowingStory=this.storyServiceImpl.getAllStory();
+		
+		ArrayList<Story> followingStory=new ArrayList<Story>();
+		
+		for(int i=0;i<myFollowingStory.size();i++) {
+			for(int j=0;j<following.size();j++)
+			{
+				if(following.get(j).getFollowing().getId()==myFollowingStory.get(i).getUser().getId())
+					followingStory.add(myFollowingStory.get(i));
+			}
+		}
+		
+		System.out.println(myStory.get(0).getStorySeen());
 
-		dashboard.setFollowing(followers);
+		dashboard.setMyStory(myStory);
+		dashboard.setFollowing(following);
+		dashboard.setMyFollowingStory(followingStory);
 		dashboard.setPosts(posts);
 		return dashboard;
 	}

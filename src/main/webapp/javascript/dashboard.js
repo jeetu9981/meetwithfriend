@@ -1,3 +1,15 @@
+function findStory(id,storyId){
+	$.ajax({
+		url:"/storyseen/seen?storyId="+storyId,
+		success:function(result){
+			console.log(result)
+			var name=$("#getImage"+id).val();
+			var s='<img src="../../images/'+name+'" height="300" width="300">';
+			$("#setImage").html(s)
+		}
+	});
+	
+}
 
 
 	function disLike(likeUser,postId,realUser){

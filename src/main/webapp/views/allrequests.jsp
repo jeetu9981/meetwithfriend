@@ -11,6 +11,7 @@
 
 <div class="container mt-5">
 	<div class="row">
+	<%@include file="succorerror.jsp"%>
 		<h1 class="text-center text-primary">Friend Requests</h1>
 		<%
 			for (int i = 0; i < user.size(); i++) {

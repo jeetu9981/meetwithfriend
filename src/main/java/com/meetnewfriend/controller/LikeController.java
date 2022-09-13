@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.meetnewfriend.entity.Like;
+import com.meetnewfriend.repository.LikeRepo;
 import com.meetnewfriend.service.impl.LikeServiceImpl;
 
 @RestController
@@ -16,6 +18,9 @@ import com.meetnewfriend.service.impl.LikeServiceImpl;
 public class LikeController {
 	@Autowired
 	private LikeServiceImpl likeServiceImpl;
+	
+	@Autowired
+	private LikeRepo likeRepo;
 	
 	
 	//this api for add like
@@ -42,6 +47,11 @@ public class LikeController {
 		else
 			session.setAttribute("failMsg", "Something went wrong.....");
 		return "success";
+	}
+	
+	@GetMapping("/getlike")
+	public Like getLikes(@RequestParam("likeId") int likeId) {
+		return this.likeRepo.findById(likeId).get();
 	}
 }
 
