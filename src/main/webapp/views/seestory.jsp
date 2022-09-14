@@ -7,8 +7,17 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body" id="setImage" >
-					
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-8" id="setImage"></div>
+				</div>
+				<div class="row mt-3">
+					<form action="/message/addmessage" method="post">
+						<input type="hidden" id="userId" name="recieverId"> <input
+							name="message" type="text" id="message" placeholder="Reply"> 
+							<input type="submit">
+					</form>
+				</div>
 				<div class="modal-body"></div>
 			</div>
 

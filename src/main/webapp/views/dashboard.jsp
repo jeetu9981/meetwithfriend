@@ -41,17 +41,14 @@
 		<%
 			for(int i=0;i<myFollowingStory.size();i++){
 		%>
+			<input id="getImage<%=myFollowingStory.get(i).getId() %>" type="hidden" value="<%=myFollowingStory.get(i).getStory()%>">
 			<div class="col-md-1">	
 				<a data-bs-toggle="modal"
-					data-bs-target="#seestory" href="" onClick="findStory(<%=myFollowingStory.get(i).getId() %>,<%=myFollowingStory.get(i).getId()%>)">
-					<input id="getImage<%=myFollowingStory.get(i).getId() %>" type="hidden" value="<%=myFollowingStory.get(i).getStory()%>">
-					<%if(myFollowingStory.get(i).getUser().getImage()!=null){ %><img
-					src="../../images/<%=myFollowingStory.get(i).getUser().getImage()%>" height="50" width="50"
-					style="border-radius: 800px;border-color:red">
-					<%}else{ %><img
-					src="../../images/profile.png" height="50" width="50"
-					style="border-radius: 800px;border-style:solid;border-color:red"><%} %></a>
-				<p class="mx-3"><%=myFollowingStory.get(i).getUser().getName() %></p>
+					data-bs-target="#seestory" href="" onClick="findStory(<%=myFollowingStory.get(i).getId() %>,<%=myFollowingStory.get(i).getId()%>,<%=myFollowingStory.get(i).getUser().getId()%>)">
+					<img src="../../images/<%=myFollowingStory.get(i).getStory()
+					%>" height="50" width="50"
+					style="border-radius: 800px;border-style:solid;border-color:red"></a>
+				<p class="mx-1"><%=myFollowingStory.get(i).getUser().getName() %></p>
 			</div>
 		<%
 			}
@@ -179,6 +176,7 @@
 <%@include file="viewlikes.jsp"%>
 <%@include file="addstory.jsp"%>
 <%@include file="seestory.jsp"%>
+<%@include file="storyseenusers.jsp"%>
 
 <script src="../../javascript/dashboard.js"></script>
 
