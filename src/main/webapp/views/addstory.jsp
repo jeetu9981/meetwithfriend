@@ -23,7 +23,8 @@
 								<div class="row">
 									<img src="../../images/<%=myStory.get(i).getStory() %>" height="300" width="200">
 									<h3><%=myStory.get(i).getDescription() %></h3>
-									<a href=""><h3>Seen : <%=myStory.get(i).getStorySeen().size() %></h3></a>
+									<a data-bs-toggle="modal"
+									data-bs-target="#seestoryusers" href=""><h3>Seen : <%=myStory.get(i).getStorySeen().size() %></h3></a>
 								</div>
 						<%
 							}
@@ -57,3 +58,5 @@
 		</div>
 	</div>
 </div>
+
+

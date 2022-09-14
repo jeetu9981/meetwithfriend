@@ -284,8 +284,6 @@ public class UserServiceImpl implements UserService {
 					followingStory.add(myFollowingStory.get(i));
 			}
 		}
-		
-		System.out.println(myStory.get(0).getStorySeen());
 
 		dashboard.setMyStory(myStory);
 		dashboard.setFollowing(following);
